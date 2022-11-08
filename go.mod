@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/google/subcommands v1.2.0
-	github.com/jvzantvoort/tmux-project v0.0.0-20210111235549-ed293d05532e
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.13.0
 )

@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"github.com/jvzantvoort/tmux-project/config"
+	"github.com/jvzantvoort/goproj/config"
 )
 
 var (
