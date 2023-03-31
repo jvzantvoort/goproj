@@ -13,9 +13,11 @@ func init() {
 	log.SetFormatter(&log.TextFormatter{
 		FullTimestamp:          true,
 		DisableLevelTruncation: true,
-		TimestampFormat:        "2006-01-02 15:04:05",
+		DisableColors:          false,
+		TimestampFormat:        "15:04:05",
 	})
 
+	//	TimestampFormat:        "2006-01-02 15:04:05",
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
 	log.SetOutput(os.Stdout)
@@ -26,17 +28,23 @@ func init() {
 
 func main() {
 
-	subcommands.Register(subcommands.HelpCommand(), "")
-	subcommands.Register(subcommands.FlagsCommand(), "")
-	subcommands.Register(subcommands.CommandsCommand(), "")
+	subcommands.Register(subcommands.HelpCommand(), "common")
+	subcommands.Register(subcommands.FlagsCommand(), "common")
+	subcommands.Register(subcommands.CommandsCommand(), "common")
+
+	subcommands.Register(&ConfigSubCmd{}, "main")
+	subcommands.Register(&SetupgcSubCmd{}, "main")
+
+	subcommands.Register(&SessionSubCmd{}, "session")
+	subcommands.Register(&ListSubCmd{}, "session")
+	subcommands.Register(&ArchiveSubCmd{}, "session")
+	subcommands.Register(&ShellProfileCmd{}, "session")
+
 	subcommands.Register(&CreateSubCmd{}, "")
 	subcommands.Register(&EditSubCmd{}, "")
-	subcommands.Register(&ListSubCmd{}, "")
-	subcommands.Register(&ArchiveSubCmd{}, "")
 	subcommands.Register(&InitProjSubCmd{}, "")
-	subcommands.Register(&ShellProfileCmd{}, "")
 	subcommands.Register(&ListFilesSubCmd{}, "")
-	subcommands.Register(&ResumeSubCmd{}, "")
+	// subcommands.Register(&ResumeSubCmd{}, "")
 
 	flag.Parse()
 	ctx := context.Background()
