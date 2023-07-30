@@ -2,32 +2,36 @@
 # Structure
 
 ```mermaid
-%%{init: {'theme': 'dark', "flowchart" : { "curve" : "basis" } } %}%%
 mindmap
   root)Project(
     MetaData
       Base Template
-      ::icon(fa fa-file)
         Name
         Version
       Project
-      ::icon(fa fa-file)
         Name
         Description
     Locations
-      RootkDir
-        BinDir
+      RootDir
         ConfigDir
     Session Management
+    Resources
+      Environment
+        PATH
+        LD_LIBRARY_PATH
     Functions
       Setup
-      ::icon(fa fa-gear)
       Status
-      ::icon(fa fa-gear)
       Backup
-      ::icon(fa fa-gear)
       Resume
-      ::icon(fa fa-rocket)
       Package
       Test
 ```
+
+## Locations
+
+* ``RootDir``: Root of the project
+
+## MetaData
+
+Store
