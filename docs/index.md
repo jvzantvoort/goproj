@@ -8,5 +8,5 @@ need to checkout a set of repo's, run some setup commands, etc..
 
 
 * [templates](template/index.md)
-* [projects](project.md)
+* [projects](project/index.md)
 
