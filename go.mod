@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/google/subcommands v1.2.0
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.13.0
 )

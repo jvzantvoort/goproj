@@ -29,6 +29,9 @@ func main() {
 	subcommands.Register(subcommands.HelpCommand(), "")
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
+
+	subcommands.Register(&SetupSubCmd{}, "update")
+
 	subcommands.Register(&CreateSubCmd{}, "")
 	subcommands.Register(&EditSubCmd{}, "")
 	subcommands.Register(&ListSubCmd{}, "")
