@@ -2,6 +2,7 @@
 # Structure
 
 ```mermaid
+%%{init: {'theme': 'dark', "flowchart" : { "curve" : "basis" } } %}%%
 mindmap
   root)Project(
     MetaData
