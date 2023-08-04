@@ -19,7 +19,7 @@ type Environment struct {
 
 // ExportString write the name and value to the buffer as a bash export string
 func (evar EnvVar) Write(w io.Writer) {
-	fmt.Fprintf(w, "export %s=\"%s\"\n", evar.Name(), strings.Join(evar.Paths, ":"))
+	fmt.Fprintf(w, "export %s=\"%s\"\n", evar.Name, strings.Join(evar.Paths, ":"))
 }
 
 func (evar EnvVar) Has(inputdir string) bool {
@@ -41,7 +41,7 @@ func (evar *EnvVar) Append(inputdir string) {
 
 }
 
-func (evar *Path) Prepend(inputdir string) {
+func (evar *EnvVar) Prepend(inputdir string) {
 	if (len(inputdir) == 0) || (evar.Has(inputdir)) {
 		return
 	}
