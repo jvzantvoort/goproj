@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/google/subcommands"
-	gop "github.com/jvzantvoort/goproj"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -24,8 +24,9 @@ func (*ArchiveSubCmd) Synopsis() string {
 	return "Archive a project"
 }
 
-func (*ArchiveSubCmd) Usage() string {
-	msgstr, err := gop.Asset("messages/usage_archive")
+func (c *ArchiveSubCmd) Usage() string {
+	filename := fmt.Sprintf("messages/usage_%s", c.Name())
+	msgstr, err := Content.ReadFile(filename)
 	if err != nil {
 		log.Error(err)
 		msgstr = []byte("undefined")

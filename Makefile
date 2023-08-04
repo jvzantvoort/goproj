@@ -19,13 +19,6 @@ clean:
 	rm -rf pkg || true; \
 	rm -rf tags || true
 
-.PHONY: refresh
-refresh: tags
-	@go-bindata -pkg goproj messages; \
-	pushd projecttype; \
-	go-bindata -pkg projecttype templates; \
-	popd
-
 .PHONY: tags
 tags:
 	@find "$${PWD}" -type f -name '*.go' -not -path '*/vendor/*'| sed "s,$${PWD}/,," | xargs gotags >tags

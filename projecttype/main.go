@@ -1,6 +1,7 @@
 package projecttype
 
 import (
+	"embed"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -13,9 +14,10 @@ import (
 	"github.com/jvzantvoort/goproj/config"
 )
 
-var (
-	mainconfig = config.NewMainConfig()
-)
+//go:embed messages/*
+var Content embed.FS
+
+var mainconfig = config.NewMainConfig()
 
 // ProjectTypeFile defines a structure of a file
 type ProjectTypeFile struct {
@@ -83,7 +85,15 @@ func (ptc ProjectTypeConfig) Describe() {
 }
 
 func (ptc ProjectTypeConfig) Write(boxname, target string) error {
-	content, _ := Asset("templates/" + boxname)
+
+	filename := "templates/" + boxname
+
+	content, err := Content.ReadFile(filename)
+	if err != nil {
+		log.Error(err)
+		content = []byte("")
+	}
+
 	file, err := os.Create(target)
 	_, err = file.Write(content)
 	if err != nil {

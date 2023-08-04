@@ -228,8 +228,12 @@ function gofunc_mod()
 
 function gofunc_build()
 {
+    local root
+    root="$(gitroot)"
   ver="$(gitversion)"
   rev="$(gitrevision)"
+
+  pushd "${root}" >/dev/null 2>&1 || return 1
 
   gofunc_mod || return 1
 
@@ -237,7 +241,7 @@ function gofunc_build()
       do
           go build -ldflags "-X main.version=$ver -X main.revision=$rev" "./cmd/${command}"
       done
-
+  popd >/dev/null 2>&1 || return 2
 }
 
 function gofunc_cross()

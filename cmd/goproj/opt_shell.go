@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/google/subcommands"
-	gop "github.com/jvzantvoort/goproj"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,8 +22,9 @@ func (*ShellProfileCmd) Synopsis() string {
 	return "Edit a projects tmux configuration"
 }
 
-func (*ShellProfileCmd) Usage() string {
-	msgstr, err := gop.Asset("messages/usage_shell")
+func (c *ShellProfileCmd) Usage() string {
+	filename := fmt.Sprintf("messages/usage_%s", c.Name())
+	msgstr, err := Content.ReadFile(filename)
 	if err != nil {
 		log.Error(err)
 		msgstr = []byte("undefined")
@@ -46,7 +46,7 @@ func (c *ShellProfileCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...inter
 
 	log.Debugln("Start")
 
-	msgstr, err := gop.Asset("messages/" + c.shellname)
+	msgstr, err := Content.ReadFile("messages/" + c.shellname)
 	if err != nil {
 		msgstr = []byte("# undefined")
 		if c.verbose {

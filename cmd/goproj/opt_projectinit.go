@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/google/subcommands"
-	gop "github.com/jvzantvoort/goproj"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,8 +23,9 @@ func (*InitProjSubCmd) Synopsis() string {
 	return "Initialize a new project type"
 }
 
-func (*InitProjSubCmd) Usage() string {
-	msgstr, err := gop.Asset("messages/usage_projectinit")
+func (c *InitProjSubCmd) Usage() string {
+	filename := fmt.Sprintf("messages/usage_%s", c.Name())
+	msgstr, err := Content.ReadFile(filename)
 	if err != nil {
 		log.Error(err)
 		msgstr = []byte("undefined")

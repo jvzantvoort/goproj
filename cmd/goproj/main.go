@@ -1,6 +1,9 @@
 package main
 
 import (
+
+	"embed"
+
 	"context"
 	"flag"
 	"os"
@@ -8,6 +11,9 @@ import (
 	"github.com/google/subcommands"
 	log "github.com/sirupsen/logrus"
 )
+
+//go:embed messages/*
+var Content embed.FS
 
 func init() {
 	log.SetFormatter(&log.TextFormatter{

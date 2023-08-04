@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/google/subcommands"
-	gop "github.com/jvzantvoort/goproj"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -24,8 +24,9 @@ func (*ListSubCmd) Synopsis() string {
 	return "List projects"
 }
 
-func (*ListSubCmd) Usage() string {
-	msgstr, err := gop.Asset("messages/usage_list")
+func (c *ListSubCmd) Usage() string {
+	filename := fmt.Sprintf("messages/usage_%s", c.Name())
+	msgstr, err := Content.ReadFile(filename)
 	if err != nil {
 		log.Error(err)
 		msgstr = []byte("undefined")

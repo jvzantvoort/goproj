@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/google/subcommands"
-	gop "github.com/jvzantvoort/goproj"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -23,8 +23,9 @@ func (*EditSubCmd) Synopsis() string {
 	return "Edit a projects tmux configuration"
 }
 
-func (*EditSubCmd) Usage() string {
-	msgstr, err := gop.Asset("messages/usage_edit")
+func (c *EditSubCmd) Usage() string {
+	filename := fmt.Sprintf("messages/usage_%s", c.Name())
+	msgstr, err := Content.ReadFile(filename)
 	if err != nil {
 		log.Error(err)
 		msgstr = []byte("undefined")
