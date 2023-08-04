@@ -12,9 +12,9 @@ import (
 )
 
 type SetupSubCmd struct {
-	path string
-	name string
-	verbose     bool
+	path    string
+	name    string
+	verbose bool
 }
 
 func (*SetupSubCmd) Name() string {
@@ -48,18 +48,25 @@ func (c *SetupSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface
 		log.SetLevel(log.DebugLevel)
 	}
 
+	log.Debugln("Start")
+	defer log.Debugln("End")
+
 	if len(c.path) == 0 {
 		log.Errorf("option -path/-p not provided")
 
 		return subcommands.ExitFailure
-
 	}
 
-	log.Debugln("Start")
-	np := project.NewProject(c.path)
-	fmt.Printf("err: %s\n", np.Locations.RootDir)
 
-	log.Debugln("End")
+	np := project.NewProject(c.path)
+	np.Functions.SetupProject()
+
+	if len(c.name) != 0 {
+		np.Name(c.name)
+		err := np.WriteToFile()
+		TestResult("Write config", err)
+	}
+	fmt.Printf("backupdir %s\n", np.Locations.BackupDirRotating("foo", 20))
 
 	return subcommands.ExitSuccess
 }

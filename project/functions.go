@@ -16,6 +16,8 @@ type Functions struct {
 	Locations Locations
 }
 
+type fn func(...string) ([]string, []string, error)
+
 func NewFunctions(locations Locations) *Functions {
 	retv := &Functions{}
 	retv.Locations = locations
@@ -87,8 +89,23 @@ func (f Functions) Execute(command string, args ...string) ([]string, []string, 
 	return stdout_list, stderr_list, err
 }
 
+func ExecNonFatal(f fn, args ...string) {
+	stdout_list, stderr_list, err := f(args...)
+	for _, line := range stdout_list {
+		log.Infof("out>  %s", line)
+	}
+
+	for _, line := range stderr_list {
+		log.Infof("err>  %s", line)
+	}
+
+	if err != nil {
+		log.Infof("fail> %v", err)
+	}
+
+}
+
 func (f Functions) Setup(args ...string) ([]string, []string, error) {
-	MkdirAll(f.Locations.ToolsPath(), 0755)
 	return f.Execute(f.Which("setup"), args...)
 }
 
@@ -112,6 +129,26 @@ func (f Functions) Package(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("package"), args...)
 }
 
+func (f Functions) Publish(args ...string) ([]string, []string, error) {
+	return f.Execute(f.Which("publish"), args...)
+}
+
+
 func (f Functions) Test(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("test"), args...)
 }
+
+func (f Functions) SetupProject(args ...string) {
+	MkdirAll(f.Locations.ToolsPath(), 0755)
+	MkdirAll(f.Locations.BinPath(), 0755)
+	ExecNonFatal(f.Setup, args...)
+}
+
+func (f Functions) BuildProject(args ...string) {
+	MkdirAll(f.Locations.ToolsPath(), 0755)
+	MkdirAll(f.Locations.BinPath(), 0755)
+	ExecNonFatal(f.Build, args...)
+	ExecNonFatal(f.Package, args...)
+}
+
+

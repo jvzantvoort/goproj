@@ -9,6 +9,16 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func OneOrLess(args ...string) (string, error) {
+	if len(args) == 0 {
+		return "", ErrListEmpty
+	}
+	if len(args) == 1 {
+		return args[0], nil
+	}
+
+	return "", ErrListTooLong
+}
 func MkdirAll(path string, mode int) {
 
 	log.Debugf("MkdirAll: start")
@@ -112,4 +122,14 @@ func FileIsExecutable(fpath string) bool {
 		return true
 	}
 	return false
+}
+
+func Reverse(input []string) []string {
+	var output []string
+
+	for i := len(input) - 1; i >= 0; i-- {
+		output = append(output, input[i])
+	}
+
+	return output
 }
