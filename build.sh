@@ -22,6 +22,7 @@
 # variables and constants {{{
 C_SCRIPTPATH="$(readlink -f "$0")"
 C_SCRIPTNAME="$(basename "$C_SCRIPTPATH" .sh)"
+C_PACKAGE="goproj"
 
 declare -A Options
 Options["build"]="build a package"
@@ -127,6 +128,48 @@ function listcommands()
 }
 # }}}
 
+function build_cross()
+{
+  local goos="$1"
+  local arch="$2"
+  local ver="$3"
+  local ref="$4"
+  local command="$5"
+  local outputdir="$6"
+
+  GOOS="${goos}" GOARCH="${arch}" \
+    go build \
+      -o "${outputdir}/${command}" \
+      -ldflags "-X main.version=$ver -X main.revision=$rev" "./cmd/${command}"
+  retv="$?"
+  return "${retv}"
+}
+
+function package_cross()
+{
+  local goos="$1"; shift
+  local ver="$1"; shift
+  local ref="$1"; shift
+  local arch="$1"; shift
+  local args=("$@")
+  local tempdir
+    local root
+    root="$(gitroot)"
+
+  tempdir="$(mktemp -d "build_${goos}_${arch}.XXXXX")"
+
+  printf "build %s %s %s/%s\n" "${goos}" "${arch}" "${ver}" "${ref}"
+  for cmnd in "${args[@]}"
+  do
+    build_cross "${goos}" "${arch}" "${ver}" "${ref}" "${cmnd}" "${tempdir}"
+  done
+  pushd "${tempdir}" >/dev/null 2>&1 || return 1
+  zip "${root}/pkg/${C_PACKAGE}_${ver}_${goos}_${arch}.zip" *
+  popd >/dev/null 2>&1
+  rm -rf "${tempdir}"
+  printf "build %s %s %s/%s, end\n" "${goos}" "${arch}" "${ver}" "${ref}"
+}
+
 function gofunc_tags()
 {
     local root
@@ -192,10 +235,30 @@ function gofunc_build()
 
   listcommands | while read -r command
       do
-          echo "go build -ldflags -X main.version=$ver -X main.revision=$rev ./cmd/${command}"
           go build -ldflags "-X main.version=$ver -X main.revision=$rev" "./cmd/${command}"
       done
 
+}
+
+function gofunc_cross()
+{
+    ver="$(gitversion)"
+    rev="$(gitrevision)"
+
+    gofunc_clean
+
+    gofunc_mod
+
+    mkdir -p pkg
+    for arch in "amd64"
+    do
+        package_cross "darwin" "${arch}" "${ver}" "${arch}" "$(listcommands)"
+    done
+
+    for arch in "amd64" "386" "arm64" "arm"
+    do
+        package_cross "linux" "${arch}" "${ver}" "${arch}" "$(listcommands)"
+    done
 }
 
 #------------------------------------------------------------------------------#
@@ -206,6 +269,7 @@ ACTION="${1:-help}"
 
 case "${ACTION}" in
     build)  gofunc_build ;;
+    cross)  gofunc_cross ;;
     clean)  gofunc_clean ;;
     doc)    gofunc_docs  ;;
     fmt)    gofunc_fmt   ;;

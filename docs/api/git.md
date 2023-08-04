@@ -1,92 +1,107 @@
-# commands
+# git
 --
     import "github.com/jvzantvoort/goproj/git"
 
-PATH type handling.
 
 ## Usage
 
-#### type Path
+```go
+const (
+	PackageName string = "GitCmd"
+)
+```
+
+#### func  Buffer2Slice
 
 ```go
-type Path struct {
-	Type        string
-	Home        string
-	Directories []string
+func Buffer2Slice(stream io.ReadCloser) []string
+```
+
+#### func  PanicOnError
+
+```go
+func PanicOnError(fmtstr string, err error)
+```
+
+#### func  PrintError
+
+```go
+func PrintError(fmtstr string, err error) error
+```
+
+#### func  PrintFatal
+
+```go
+func PrintFatal(fmtstr string, err error) error
+```
+
+#### type GitCmd
+
+```go
+type GitCmd struct {
+	Path       *Path
+	Cwd        string
+	Command    string
+	CommandMap map[string]string
 }
 ```
 
+GitCmd object for git
 
-#### func  NewPath
-
-```go
-func NewPath(pathname string) *Path
-```
-
-#### func (*Path) AppendPath
+#### func  NewGitCmd
 
 ```go
-func (p *Path) AppendPath(inputdir string) error
+func NewGitCmd() *GitCmd
 ```
-AppendPath append a path to the list of Directories
+NewGitCmd create a new git object
 
-#### func (Path) HavePath
+#### func (GitCmd) Branch
 
 ```go
-func (p Path) HavePath(inputdir string) bool
+func (g GitCmd) Branch() string
 ```
+Branch function returning the current git branch
 
-#### func (*Path) Import
+#### func (GitCmd) Commit
 
 ```go
-func (p *Path) Import(path string)
+func (g GitCmd) Commit(message string, args ...string) ([]string, []string, error)
 ```
 
-#### func (Path) IsEmpty
+#### func (GitCmd) Execute
 
 ```go
-func (p Path) IsEmpty() bool
+func (g GitCmd) Execute(args ...string) ([]string, []string, error)
 ```
 
-#### func (Path) Lookup
+#### func (GitCmd) LogDebugf
 
 ```go
-func (p Path) Lookup(target string) (string, error)
+func (g GitCmd) LogDebugf(format string, args ...interface{})
 ```
 
-#### func (Path) LookupMulti
+#### func (GitCmd) LogFatalf
 
 ```go
-func (p Path) LookupMulti(targets ...string) (string, error)
+func (g GitCmd) LogFatalf(format string, args ...interface{})
 ```
 
-#### func (Path) LookupPlatform
+#### func (GitCmd) Prefix
 
 ```go
-func (p Path) LookupPlatform(pathmap map[string]string) (string, error)
+func (g GitCmd) Prefix() string
 ```
-LookupPlatform lookup paths based on platform
 
-#### func (Path) MapGetPlatform
+#### func (GitCmd) Root
 
 ```go
-func (p Path) MapGetPlatform(pathmap map[string]string) (string, error)
+func (g GitCmd) Root() string
 ```
+Root function returning the git root
 
-#### func (Path) Prefix
+#### func (GitCmd) URL
 
 ```go
-func (p Path) Prefix() string
+func (g GitCmd) URL() string
 ```
-
-#### func (*Path) PrependPath
-
-```go
-func (p *Path) PrependPath(inputdir string) error
-```
-
-#### func (Path) ReturnExport
-
-```go
-func (p Path) ReturnExport() string
-```
+Aliasses URL function returning the git url
