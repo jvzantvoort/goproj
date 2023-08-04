@@ -57,7 +57,6 @@ func (c *SetupSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface
 		return subcommands.ExitFailure
 	}
 
-
 	np := project.NewProject(c.path)
 	np.Functions.SetupProject()
 

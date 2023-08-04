@@ -45,7 +45,6 @@ func (g GitCmd) LogFatalf(format string, args ...interface{}) {
 	log.Fatal(prefix + message)
 }
 
-
 func (g GitCmd) Execute(args ...string) ([]string, []string, error) {
 
 	// set log prefix and log start and end

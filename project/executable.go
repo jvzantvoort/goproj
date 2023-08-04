@@ -8,9 +8,9 @@ import (
 )
 
 type Executable struct {
-	PathToScript    string
-	OS         string
-	Extensions []string
+	PathToScript string
+	OS           string
+	Extensions   []string
 }
 
 func (e Executable) LookupExt() (string, error) {

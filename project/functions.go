@@ -11,7 +11,7 @@ import (
 )
 
 type Functions struct {
-	Cwd     string
+	Cwd       string
 	ToolsPath string
 	Locations Locations
 }
@@ -133,7 +133,6 @@ func (f Functions) Publish(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("publish"), args...)
 }
 
-
 func (f Functions) Test(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("test"), args...)
 }
@@ -150,5 +149,3 @@ func (f Functions) BuildProject(args ...string) {
 	ExecNonFatal(f.Build, args...)
 	ExecNonFatal(f.Package, args...)
 }
-
-

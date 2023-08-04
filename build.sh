@@ -73,8 +73,8 @@ function gitroot() { git rev-parse --show-toplevel; }
 function listsubdirs()
 {
   local root
-
   root="$(gitroot)"
+
   find "${root}" -maxdepth 1 -mindepth 1 -type d \
     -not -name vendor \
     -not -name cmd \
@@ -83,6 +83,17 @@ function listsubdirs()
     do
       find "$target" -name '*.go' -printf "%h\n"
     done|sort -u
+}
+function listgofiles()
+{
+  local root
+  root="$(gitroot)"
+
+  listsubdirs | while read -r srcdir
+  do
+    find "${srcdir}" -type f -name '*.go'
+  done | sort
+  find "${root}/cmd" -type f -name '*.go'
 }
 
 function apidocsdir() { printf "%s/docs/api" "$(gitroot)"; }
@@ -104,6 +115,19 @@ function buildapidoc()
 
 }
 
+function clean()
+{
+  local root
+
+  root="$(gitroot)"
+  find "${root}/cmd" -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | while read -r target
+  do
+    [[ -f "${root}/${target}" ]] && rm -vf "${root}/${target}"
+  done
+  [[ -f "${root}/tags" ]] && rm -vf "${root}/tags"
+  [[ -d "${root}/pkg" ]] && rm -rvf "${root}/pkg"
+}
+
 function usage()
 {
   local indent
@@ -115,6 +139,24 @@ function usage()
   exit
 }
 
+function lint()
+{
+  listgofiles | while read -r target
+    do
+      golangci-lint run --no-config --disable-all --enable=goimports --enable=misspell "${target}"
+    done
+}
+
+function fmt()
+{
+  listgofiles | while read -r target
+    do
+      goimports -w "${target}"
+    done
+
+
+}
+
 #------------------------------------------------------------------------------#
 #                                    Main                                      #
 #------------------------------------------------------------------------------#
@@ -122,6 +164,9 @@ function usage()
 ACTION="${1:-help}"
 
 case "${ACTION}" in
+  fmt) fmt ;;
+  lint) lint ;;
+  clean) clean ;;
   doc)
     buildapidoc
     ;;

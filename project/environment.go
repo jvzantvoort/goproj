@@ -7,9 +7,9 @@ import (
 )
 
 type EnvVar struct {
-	RootPath string `json:"-"`
-	Name  string   `json:"name"`
-	Paths []string `json:"paths"`
+	RootPath string   `json:"-"`
+	Name     string   `json:"name"`
+	Paths    []string `json:"paths"`
 }
 
 type Environment struct {

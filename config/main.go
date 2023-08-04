@@ -1,5 +1,4 @@
 // Package config provides configuration data globally used
-//
 package config
 
 import (

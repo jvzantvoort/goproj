@@ -36,7 +36,6 @@ func PrintFatal(fmtstr string, err error) error {
 	return err
 }
 
-
 func PanicOnError(fmtstr string, err error) {
 	PrintError(fmtstr, err)
 	if err != nil {
