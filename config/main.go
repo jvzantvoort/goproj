@@ -15,6 +15,7 @@ import (
 
 const (
 	SettingsFile string = "settings.json"
+	RegistryFile string = "registry.json"
 )
 
 // UserConfig
@@ -217,6 +218,39 @@ func (m *MainConfig) ResetConfig() {
 	m.ForceInit = true
 	m.Init()
 	m.CreateDirs()
+}
+
+func (m *MainConfig) Get(name string) (string, error) {
+	switch name {
+	case "version":
+		return m.AppVersion, nil
+	case "user.mailaddress":
+		return m.UserConfig.MailAddress, nil
+	case "user.company":
+		return m.UserConfig.Company, nil
+	case "user.copyright":
+		return m.UserConfig.Copyright, nil
+	case "user.license":
+		return m.UserConfig.License, nil
+	case "user.user":
+		return m.UserConfig.User, nil
+	case "user.username":
+		return m.UserConfig.Username, nil
+	default:
+		return "", fmt.Errorf("Illegal field: %s", name)
+	}
+}
+
+func (m MainConfig) Fields() []string {
+	fields := []string{}
+	fields = append(fields, "version")
+	fields = append(fields, "user.mailaddress")
+	fields = append(fields, "user.company")
+	fields = append(fields, "user.copyright")
+	fields = append(fields, "user.license")
+	fields = append(fields, "user.user")
+	fields = append(fields, "user.username")
+	return fields
 }
 
 // NewMainConfig initialize a MainConfig and initialize it.

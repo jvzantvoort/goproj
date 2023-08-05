@@ -48,11 +48,12 @@ func main() {
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
 
-	subcommands.Register(&ConfigSubCmd{}, "appl")
+	subcommands.Register(&ConfigSubCmd{}, "application")
 
 	subcommands.Register(&SetupSubCmd{}, "update")
 
 	subcommands.Register(&CreateSubCmd{}, "proj")
+	subcommands.Register(&RegisterSubCmd{}, "proj")
 	subcommands.Register(&EditSubCmd{}, "proj")
 	subcommands.Register(&ListSubCmd{}, "proj")
 	subcommands.Register(&ArchiveSubCmd{}, "proj")

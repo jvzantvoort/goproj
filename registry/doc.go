@@ -1,0 +1,3 @@
+// Register configs
+//
+package registry
