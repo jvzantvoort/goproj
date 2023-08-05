@@ -13,6 +13,6 @@ type VCSUrl struct {
 
 // Targets missing godoc.
 type Targets struct {
-	Files []os.FileInfo
-	Repos []VCSUrl
+	Files []os.FileInfo `json:"files"`
+	Repos []VCSUrl      `json:"vcs"`
 }

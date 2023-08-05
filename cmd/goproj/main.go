@@ -50,16 +50,15 @@ func main() {
 
 	subcommands.Register(&ConfigSubCmd{}, "application")
 
-	subcommands.Register(&SetupSubCmd{}, "update")
+	// project
+	subcommands.Register(&SetupSubCmd{}, "project")
+	subcommands.Register(&CreateSubCmd{}, "project")
+	subcommands.Register(&EditSubCmd{}, "project")
+	subcommands.Register(&ArchiveSubCmd{}, "project")
+	subcommands.Register(&ShellProfileCmd{}, "project")
 
-	subcommands.Register(&CreateSubCmd{}, "proj")
-	subcommands.Register(&RegisterSubCmd{}, "proj")
-	subcommands.Register(&EditSubCmd{}, "proj")
-	subcommands.Register(&ListSubCmd{}, "proj")
-	subcommands.Register(&ArchiveSubCmd{}, "proj")
-	subcommands.Register(&ShellProfileCmd{}, "proj")
-	subcommands.Register(&ListFilesSubCmd{}, "proj")
-	subcommands.Register(&ResumeSubCmd{}, "proj")
+	subcommands.Register(&ListSubCmd{}, "registry")
+	subcommands.Register(&RegisterSubCmd{}, "registry")
 
 	subcommands.Register(&InitProjSubCmd{}, "type")
 

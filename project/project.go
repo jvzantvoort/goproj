@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/olekukonko/tablewriter"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -15,6 +16,7 @@ import (
 type Project struct {
 	MetaData  MetaData  `json:"metadata"`
 	Locations Locations `json:"locations"`
+	Targets   Targets   `json:"targets"`
 	Functions Functions `json:"-"`
 }
 
@@ -44,6 +46,17 @@ func (p Project) Write(writer io.Writer) error {
 	}
 	return err
 
+}
+
+func (p Project) WriteTable(writer io.Writer) {
+	table := tablewriter.NewWriter(writer)
+	table.SetHeader([]string{"Name", "Value"})
+	table.Append([]string{"Name", p.MetaData.Project.Name})
+	table.Append([]string{"Description", p.MetaData.Project.Description})
+	table.Append([]string{"Root", p.Locations.RootDir})
+	table.SetHeaderLine(true)
+	table.SetBorder(false)
+	table.Render()
 }
 
 // ReadFromFile

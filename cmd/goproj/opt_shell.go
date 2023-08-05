@@ -22,7 +22,7 @@ func (*ShellProfileCmd) Name() string {
 
 // Synopsis missing godoc.
 func (*ShellProfileCmd) Synopsis() string {
-	return "Edit a projects tmux configuration"
+	return "Return the shell configuration of a profile"
 }
 
 // Usage missing godoc.

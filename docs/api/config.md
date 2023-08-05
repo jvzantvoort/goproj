@@ -20,6 +20,7 @@ Package config provides configuration data globally used
 ```go
 const (
 	SettingsFile string = "settings.json"
+	RegistryFile string = "registry.json"
 )
 ```
 
@@ -62,6 +63,18 @@ func (m MainConfig) ConfigFile(name string) string
 func (m MainConfig) CreateDirs()
 ```
 CreateDirs create the main config dir
+
+#### func (MainConfig) Fields
+
+```go
+func (m MainConfig) Fields() []string
+```
+
+#### func (*MainConfig) Get
+
+```go
+func (m *MainConfig) Get(name string) (string, error)
+```
 
 #### func (*MainConfig) GetArchiveDir
 

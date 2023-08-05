@@ -379,6 +379,7 @@ MetaData references to other information
 type Project struct {
 	MetaData  MetaData  `json:"metadata"`
 	Locations Locations `json:"locations"`
+	Targets   Targets   `json:"targets"`
 	Functions Functions `json:"-"`
 }
 ```
@@ -431,6 +432,12 @@ func (p Project) Write(writer io.Writer) error
 ```
 Write
 
+#### func (Project) WriteTable
+
+```go
+func (p Project) WriteTable(writer io.Writer)
+```
+
 #### func (Project) WriteToFile
 
 ```go
@@ -453,8 +460,8 @@ ProjectInfo basic project info
 
 ```go
 type Targets struct {
-	Files []os.FileInfo
-	Repos []VCSUrl
+	Files []os.FileInfo `json:"files"`
+	Repos []VCSUrl      `json:"vcs"`
 }
 ```
 

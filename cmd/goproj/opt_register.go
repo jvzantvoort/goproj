@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/google/subcommands"
 	"github.com/jvzantvoort/goproj/project"
@@ -11,24 +12,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// RegisterSubCmd missing godoc.
+// RegisterSubCmd is a subcommand to register a project.
 type RegisterSubCmd struct {
 	path    string
 	name    string
 	verbose bool
 }
 
-// Name missing godoc.
+// Name a function to return the name of the command
 func (*RegisterSubCmd) Name() string {
 	return "register"
 }
 
-// Synopsis missing godoc.
+// Synopsis a function to return the synopsis of the command
 func (*RegisterSubCmd) Synopsis() string {
 	return "Register project"
 }
 
-// Usage missing godoc.
+// Usage a function to return the usage of the command
 func (c *RegisterSubCmd) Usage() string {
 	filename := fmt.Sprintf("messages/usage_%s", c.Name())
 	msgstr, err := Content.ReadFile(filename)
@@ -39,12 +40,12 @@ func (c *RegisterSubCmd) Usage() string {
 	return string(msgstr)
 }
 
-// SetFlags missing godoc.
+// SetFlags handles flags
 func (c *RegisterSubCmd) SetFlags(f *flag.FlagSet) {
 	f.BoolVar(&c.verbose, "v", false, "Verbose logging")
 }
 
-// Execute missing godoc.
+// Execute subcommand
 func (c *RegisterSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	arguments := []string{}
@@ -60,7 +61,7 @@ func (c *RegisterSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interf
 	if f.NArg() == 0 {
 		fmt.Printf(c.Usage())
 
-	return subcommands.ExitSuccess
+		return subcommands.ExitSuccess
 	}
 
 	arguments = f.Args()[:]
@@ -76,9 +77,18 @@ func (c *RegisterSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interf
 		reg.Register(*project)
 		reg.Save()
 	case "list":
-		for _, name := range reg.List() {
-			fmt.Println(name)
+		for name, proj := range reg.Projects {
+			fmt.Printf("%s %s\n", name, proj.Description())
 		}
+	case "info":
+		name := remainder[0]
+		remainder = remainder[1:]
+		proj, ok := reg.Get(name)
+		if !ok {
+			fmt.Printf("Project %s not found\n", name)
+			return subcommands.ExitSuccess
+		}
+		proj.WriteTable(os.Stdout)
 	default:
 		fmt.Printf(c.Usage())
 	}

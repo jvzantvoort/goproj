@@ -23,7 +23,7 @@ func (*EditSubCmd) Name() string {
 
 // Synopsis missing godoc.
 func (*EditSubCmd) Synopsis() string {
-	return "Edit a projects tmux configuration"
+	return "Edit a projects configuration"
 }
 
 // Usage missing godoc.
