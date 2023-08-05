@@ -8,12 +8,14 @@
 ```go
 var Content embed.FS
 ```
+Content missing godoc.
 
 #### func  CreateProjectType
 
 ```go
 func CreateProjectType(projecttype string) error
 ```
+CreateProjectType missing godoc.
 
 #### type ProjectTypeConfig
 
@@ -50,24 +52,28 @@ Describe describe
 ```go
 func (ptc ProjectTypeConfig) Exists(targetpath string) bool
 ```
+Exists missing godoc.
 
 #### func (*ProjectTypeConfig) Init
 
 ```go
 func (ptc *ProjectTypeConfig) Init(projtypeconfigdir, projecttype string) error
 ```
+Init missing godoc.
 
 #### func (ProjectTypeConfig) UpdateConfigFile
 
 ```go
 func (ptc ProjectTypeConfig) UpdateConfigFile(target string) error
 ```
+UpdateConfigFile missing godoc.
 
 #### func (ProjectTypeConfig) Write
 
 ```go
 func (ptc ProjectTypeConfig) Write(boxname, target string) error
 ```
+Write missing godoc.
 
 #### type ProjectTypeFile
 

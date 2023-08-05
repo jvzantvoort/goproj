@@ -16,24 +16,28 @@ type CloneUrl struct {
 }
 ```
 
+CloneUrl missing godoc.
 
 #### func (CloneUrl) Clone
 
 ```go
 func (cu CloneUrl) Clone()
 ```
+Clone missing godoc.
 
 #### func (CloneUrl) Exists
 
 ```go
 func (cu CloneUrl) Exists()
 ```
+Exists missing godoc.
 
 #### func (CloneUrl) Pull
 
 ```go
 func (cu CloneUrl) Pull()
 ```
+Pull missing godoc.
 
 #### type File
 
@@ -45,6 +49,7 @@ type File struct {
 }
 ```
 
+File missing godoc.
 
 #### type Setup
 
@@ -55,6 +60,7 @@ type Setup struct {
 }
 ```
 
+Setup missing godoc.
 
 #### type Template
 
@@ -67,3 +73,5 @@ type Template struct {
 	Files   []File `yaml:"files"`
 }
 ```
+
+Template missing godoc.

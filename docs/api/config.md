@@ -11,64 +11,141 @@ Example:
 
     mainconfig := NewMainConfig()
     fmt.Printf("home dir: %s", mainconfig.HomeDir)
-    fmt.Printf("tmux dir: %s", mainconfig.TmuxDir)
-    fmt.Printf("project type config dir: %s", mainconfig.ProjTypeConfigDir)
+    fmt.Printf("project type config dir: %s", mainconfig.ConfigDir)
 
 Package config provides configuration data globally used
 
 ## Usage
 
+```go
+const (
+	SettingsFile string = "settings.json"
+)
+```
+
 #### type MainConfig
 
 ```go
 type MainConfig struct {
-	HomeDir            string
-	TmuxDir            string
-	ProjTypeConfigDir  string
-	ProjTypeConfigMode int
+	ForceInit      bool
+	HomeDir        string
+	ArchiveDir     string
+	ConfigDir      string
+	TemplatesDir   string
+	ConfigDirPerms int
+	AppVersion     string     `json:"version"`
+	UserConfig     UserConfig `json:"user"`
 }
 ```
 
+MainConfig configuration for goproj
 
 #### func  NewMainConfig
 
 ```go
 func NewMainConfig() *MainConfig
 ```
+NewMainConfig initialize a MainConfig and initialize it.
 
-#### func (MainConfig) ExpandHome
+    mc := config.NewMainConfig()
+    fmt.Printf("config dir: %s\n", mc.ConfigDir)
+
+#### func (MainConfig) ConfigFile
 
 ```go
-func (m MainConfig) ExpandHome(pathstr string) (string, error)
+func (m MainConfig) ConfigFile(name string) string
 ```
-ExpandHome expand the tilde in a given path.
+
+#### func (MainConfig) CreateDirs
+
+```go
+func (m MainConfig) CreateDirs()
+```
+CreateDirs create the main config dir
+
+#### func (*MainConfig) GetArchiveDir
+
+```go
+func (m *MainConfig) GetArchiveDir() string
+```
+
+#### func (*MainConfig) GetConfigDir
+
+```go
+func (m *MainConfig) GetConfigDir() string
+```
 
 #### func (*MainConfig) GetHomeDir
 
 ```go
 func (m *MainConfig) GetHomeDir() string
 ```
+GetHomeDir get the user's homedir
 
-#### func (MainConfig) GetProjTypeConfigDir
+#### func (*MainConfig) GetTemplatesDir
 
 ```go
-func (m MainConfig) GetProjTypeConfigDir() (string, int)
+func (m *MainConfig) GetTemplatesDir() string
 ```
 
-#### func (*MainConfig) GetTmuxDir
+#### func (*MainConfig) Init
 
 ```go
-func (m *MainConfig) GetTmuxDir() string
+func (m *MainConfig) Init()
+```
+Init initialize the MainConfig struct
+
+#### func (*MainConfig) Read
+
+```go
+func (m *MainConfig) Read(reader io.Reader) error
+```
+File handling
+
+Read
+
+#### func (*MainConfig) ReadFromFile
+
+```go
+func (m *MainConfig) ReadFromFile(name string) error
+```
+ReadFromFile
+
+#### func (*MainConfig) ResetConfig
+
+```go
+func (m *MainConfig) ResetConfig()
 ```
 
-#### func (MainConfig) MkdirAll
+#### func (MainConfig) Save
 
 ```go
-func (m MainConfig) MkdirAll(path string, mode int)
+func (m MainConfig) Save()
 ```
 
-#### func (MainConfig) Prefix
+#### func (MainConfig) Write
 
 ```go
-func (m MainConfig) Prefix() string
+func (m MainConfig) Write(writer io.Writer) error
+```
+Write
+
+#### func (MainConfig) WriteToFile
+
+```go
+func (m MainConfig) WriteToFile(name string) error
+```
+WriteToFile
+
+#### type UserConfig
+
+```go
+type UserConfig struct {
+	MailAddress string `json:"mailaddress"`
+	Company     string `json:"company"`
+	Copyright   string `json:"copyright"`
+	License     string `json:"license"`
+	User        string `json:"user"`
+	Username    string `json:"username"`
+}
 ```

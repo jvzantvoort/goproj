@@ -2,30 +2,6 @@
 --
     import "github.com/jvzantvoort/goproj/project"
 
-### Project
-
-    MetaData
-      ProjectInfo
-        Name
-        Description
-      Base Template
-        Name
-        Version
-    Locations
-      RootDir
-        ConfigDir
-    Resources
-      Environment
-        PATH
-        LD_LIBRARY_PATH
-    Functions
-      Setup
-      Status
-      Backup
-      Resume
-      Package
-      Test
-    Session Management
 
 ## Usage
 
@@ -34,6 +10,7 @@ const (
 	ProjectName string = "goproj"
 )
 ```
+ProjectName missing godoc.
 
 ```go
 var (
@@ -42,8 +19,10 @@ var (
 	// ErrNotFound project not found
 	ErrNotFound = errors.New("Project not found")
 	// ErrDuplicate project is already in list when it should not
-	ErrDuplicate   = errors.New("Project already found")
-	ErrListEmpty   = errors.New("List is empty")
+	ErrDuplicate = errors.New("Project already found")
+	// ErrListEmpty missing godoc.
+	ErrListEmpty = errors.New("List is empty")
+	// ErrListTooLong missing godoc.
 	ErrListTooLong = errors.New("List is too long")
 )
 ```
@@ -53,60 +32,70 @@ var (
 ```go
 func Buffer2Slice(stream io.ReadCloser) []string
 ```
+Buffer2Slice missing godoc.
 
 #### func  ExecNonFatal
 
 ```go
 func ExecNonFatal(f fn, args ...string)
 ```
+ExecNonFatal missing godoc.
 
 #### func  FileExists
 
 ```go
 func FileExists(fpath string) (bool, os.FileInfo)
 ```
+FileExists missing godoc.
 
 #### func  FileIsExecutable
 
 ```go
 func FileIsExecutable(fpath string) bool
 ```
+FileIsExecutable missing godoc.
 
 #### func  MkdirAll
 
 ```go
 func MkdirAll(path string, mode int)
 ```
+MkdirAll missing godoc.
 
 #### func  OneOrLess
 
 ```go
 func OneOrLess(args ...string) (string, error)
 ```
+OneOrLess missing godoc.
 
 #### func  PanicOnError
 
 ```go
 func PanicOnError(fmtstr string, err error)
 ```
+PanicOnError missing godoc.
 
 #### func  PrintError
 
 ```go
 func PrintError(fmtstr string, err error) error
 ```
+PrintError missing godoc.
 
 #### func  PrintFatal
 
 ```go
 func PrintFatal(fmtstr string, err error) error
 ```
+PrintFatal missing godoc.
 
 #### func  Reverse
 
 ```go
 func Reverse(input []string) []string
 ```
+Reverse missing godoc.
 
 #### type BaseTemplate
 
@@ -129,31 +118,36 @@ type EnvVar struct {
 }
 ```
 
+EnvVar missing godoc.
 
 #### func (*EnvVar) Append
 
 ```go
 func (evar *EnvVar) Append(inputdir string)
 ```
+Append missing godoc.
 
 #### func (EnvVar) Has
 
 ```go
 func (evar EnvVar) Has(inputdir string) bool
 ```
+Has missing godoc.
 
 #### func (*EnvVar) Prepend
 
 ```go
 func (evar *EnvVar) Prepend(inputdir string)
 ```
+Prepend missing godoc.
 
 #### func (EnvVar) Write
 
 ```go
 func (evar EnvVar) Write(w io.Writer)
 ```
-ExportString write the name and value to the buffer as a bash export string
+Write missing godoc. ExportString write the name and value to the buffer as a
+bash export string
 
 #### type Environment
 
@@ -164,6 +158,7 @@ type Environment struct {
 }
 ```
 
+Environment missing godoc.
 
 #### type Executable
 
@@ -175,30 +170,35 @@ type Executable struct {
 }
 ```
 
+Executable missing godoc.
 
 #### func  NewExecutable
 
 ```go
 func NewExecutable(command string, extensions ...string) *Executable
 ```
+NewExecutable missing godoc.
 
 #### func (*Executable) AppendExt
 
 ```go
 func (e *Executable) AppendExt(extstr string)
 ```
+AppendExt missing godoc.
 
 #### func (Executable) LookupExt
 
 ```go
 func (e Executable) LookupExt() (string, error)
 ```
+LookupExt missing godoc.
 
 #### func (*Executable) PrependExt
 
 ```go
 func (e *Executable) PrependExt(extstr string)
 ```
+PrependExt missing godoc.
 
 #### type Functions
 
@@ -210,90 +210,105 @@ type Functions struct {
 }
 ```
 
+Functions missing godoc.
 
 #### func  NewFunctions
 
 ```go
 func NewFunctions(locations Locations) *Functions
 ```
+NewFunctions missing godoc.
 
 #### func (Functions) Backup
 
 ```go
 func (f Functions) Backup(args ...string) ([]string, []string, error)
 ```
+Backup missing godoc.
 
 #### func (Functions) Build
 
 ```go
 func (f Functions) Build(args ...string) ([]string, []string, error)
 ```
+Build missing godoc.
 
 #### func (Functions) BuildProject
 
 ```go
 func (f Functions) BuildProject(args ...string)
 ```
+BuildProject missing godoc.
 
 #### func (Functions) Execute
 
 ```go
 func (f Functions) Execute(command string, args ...string) ([]string, []string, error)
 ```
+Execute missing godoc.
 
 #### func (Functions) LookupExt
 
 ```go
 func (f Functions) LookupExt(command string) (string, error)
 ```
+LookupExt missing godoc.
 
 #### func (Functions) Package
 
 ```go
 func (f Functions) Package(args ...string) ([]string, []string, error)
 ```
+Package missing godoc.
 
 #### func (Functions) Publish
 
 ```go
 func (f Functions) Publish(args ...string) ([]string, []string, error)
 ```
+Publish missing godoc.
 
 #### func (Functions) Setup
 
 ```go
 func (f Functions) Setup(args ...string) ([]string, []string, error)
 ```
+Setup missing godoc.
 
 #### func (Functions) SetupProject
 
 ```go
 func (f Functions) SetupProject(args ...string)
 ```
+SetupProject missing godoc.
 
 #### func (Functions) Status
 
 ```go
 func (f Functions) Status(args ...string) ([]string, []string, error)
 ```
+Status missing godoc.
 
 #### func (Functions) Teardown
 
 ```go
 func (f Functions) Teardown(args ...string) ([]string, []string, error)
 ```
+Teardown missing godoc.
 
 #### func (Functions) Test
 
 ```go
 func (f Functions) Test(args ...string) ([]string, []string, error)
 ```
+Test missing godoc.
 
 #### func (Functions) Which
 
 ```go
 func (f Functions) Which(command string) string
 ```
+Which missing godoc.
 
 #### type Locations
 
@@ -310,36 +325,42 @@ Locations the locations used in the object
 ```go
 func (L Locations) BackupDir(args ...string) string
 ```
+BackupDir missing godoc.
 
 #### func (Locations) BackupDirRotating
 
 ```go
 func (L Locations) BackupDirRotating(name string, max int) string
 ```
+BackupDirRotating missing godoc.
 
 #### func (Locations) BinPath
 
 ```go
 func (L Locations) BinPath() string
 ```
+BinPath missing godoc.
 
 #### func (Locations) ConfigDir
 
 ```go
 func (L Locations) ConfigDir() string
 ```
+ConfigDir missing godoc.
 
 #### func (Locations) ConfigFile
 
 ```go
 func (L Locations) ConfigFile() string
 ```
+ConfigFile missing godoc.
 
 #### func (Locations) ToolsPath
 
 ```go
 func (L Locations) ToolsPath() string
 ```
+ToolsPath missing godoc.
 
 #### type MetaData
 
@@ -371,18 +392,21 @@ Project the project object
 ```go
 func NewProject(path string) *Project
 ```
+NewProject missing godoc.
 
 #### func (*Project) Description
 
 ```go
 func (p *Project) Description(args ...string) string
 ```
+Description missing godoc.
 
 #### func (*Project) Name
 
 ```go
 func (p *Project) Name(args ...string) string
 ```
+Name missing godoc.
 
 #### func (*Project) Read
 
@@ -434,6 +458,7 @@ type Targets struct {
 }
 ```
 
+Targets missing godoc.
 
 #### type VCSUrl
 
@@ -446,4 +471,4 @@ type VCSUrl struct {
 }
 ```
 
-Version Constrol Service Url
+VCSUrl missing godoc. Version Constrol Service Url
