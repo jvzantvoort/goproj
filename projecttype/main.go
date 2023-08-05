@@ -11,9 +11,12 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
+	"github.com/mitchellh/go-homedir"
 	"github.com/jvzantvoort/goproj/config"
 )
 
+// Content missing godoc.
+//
 //go:embed messages/*
 var Content embed.FS
 
@@ -84,6 +87,7 @@ func (ptc ProjectTypeConfig) Describe() {
 
 }
 
+// Write missing godoc.
 func (ptc ProjectTypeConfig) Write(boxname, target string) error {
 
 	filename := "templates/" + boxname
@@ -103,6 +107,7 @@ func (ptc ProjectTypeConfig) Write(boxname, target string) error {
 	return nil
 }
 
+// Exists missing godoc.
 func (ptc ProjectTypeConfig) Exists(targetpath string) bool {
 	_, err := os.Stat(targetpath)
 	if err != nil {
@@ -114,6 +119,7 @@ func (ptc ProjectTypeConfig) Exists(targetpath string) bool {
 	return true
 }
 
+// UpdateConfigFile missing godoc.
 func (ptc ProjectTypeConfig) UpdateConfigFile(target string) error {
 
 	read, err := ioutil.ReadFile(target)
@@ -136,6 +142,7 @@ func (ptc ProjectTypeConfig) UpdateConfigFile(target string) error {
 	return nil
 }
 
+// Init missing godoc.
 func (ptc *ProjectTypeConfig) Init(projtypeconfigdir, projecttype string) error {
 
 	log.Debugf("Init Start: %s", projecttype)
@@ -174,16 +181,15 @@ func (ptc *ProjectTypeConfig) Init(projtypeconfigdir, projecttype string) error 
 func NewProjectTypeConfig(projecttype string) ProjectTypeConfig {
 
 	// Load main configuration targets
-	projtypeconfigdir := path.Join(mainconfig.ProjTypeConfigDir, projecttype)
+	projtypeconfigdir := path.Join(mainconfig.ConfigDir, projecttype)
 
 	log.Debugf("project type config dir: %s", projtypeconfigdir)
-	log.Debugf("tmux dir: %s", mainconfig.TmuxDir)
 
 	v := ProjectTypeConfig{}
 	v.readConfig(projtypeconfigdir)
 
 	var err error
-	v.Workdir, err = mainconfig.ExpandHome(v.Workdir)
+	v.Workdir, err = homedir.Expand(v.Workdir)
 	if err != nil {
 		log.Errorf("%q", err)
 	}
@@ -191,8 +197,9 @@ func NewProjectTypeConfig(projecttype string) ProjectTypeConfig {
 	return v
 }
 
+// CreateProjectType missing godoc.
 func CreateProjectType(projecttype string) error {
 	var pt ProjectTypeConfig
-	pt.Init(mainconfig.ProjTypeConfigDir, projecttype)
+	pt.Init(mainconfig.ConfigDir, projecttype)
 	return nil
 }

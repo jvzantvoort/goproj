@@ -14,22 +14,27 @@ type Locations struct {
 	backupdir string `json:"backupdir"`
 }
 
+// ConfigDir missing godoc.
 func (L Locations) ConfigDir() string {
 	return path.Join(L.RootDir, "."+ProjectName)
 }
 
+// ConfigFile missing godoc.
 func (L Locations) ConfigFile() string {
 	return path.Join(L.ConfigDir(), "settings.json")
 }
 
+// BinPath missing godoc.
 func (L Locations) BinPath() string {
 	return path.Join(L.RootDir, "bin")
 }
 
+// ToolsPath missing godoc.
 func (L Locations) ToolsPath() string {
 	return path.Join(L.ConfigDir(), "libexec")
 }
 
+// BackupDir missing godoc.
 func (L Locations) BackupDir(args ...string) string {
 	if option, err := OneOrLess(args...); err == nil {
 		L.backupdir = option
@@ -40,6 +45,7 @@ func (L Locations) BackupDir(args ...string) string {
 	return L.backupdir
 }
 
+// BackupDirRotating missing godoc.
 func (L Locations) BackupDirRotating(name string, max int) string {
 	log.Debugf("BackupDirRotating: %s %d", name, max)
 	defer log.Debugf("BackupDirRotating: %s %d", name, max)

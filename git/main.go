@@ -19,12 +19,14 @@ type GitCmd struct {
 	CommandMap map[string]string
 }
 
+// Prefix missing godoc.
 func (g GitCmd) Prefix() string {
 	pc, _, _, _ := runtime.Caller(1)
 	elements := strings.Split(runtime.FuncForPC(pc).Name(), ".")
 	return fmt.Sprintf("%s.%s", PackageName, elements[len(elements)-1])
 }
 
+// LogDebugf missing godoc.
 func (g GitCmd) LogDebugf(format string, args ...interface{}) {
 	pc, _, _, _ := runtime.Caller(2)
 	elements := strings.Split(runtime.FuncForPC(pc).Name(), ".")
@@ -35,6 +37,7 @@ func (g GitCmd) LogDebugf(format string, args ...interface{}) {
 	log.Debug(prefix + message)
 }
 
+// LogFatalf missing godoc.
 func (g GitCmd) LogFatalf(format string, args ...interface{}) {
 	pc, _, _, _ := runtime.Caller(2)
 	elements := strings.Split(runtime.FuncForPC(pc).Name(), ".")
@@ -45,6 +48,7 @@ func (g GitCmd) LogFatalf(format string, args ...interface{}) {
 	log.Fatal(prefix + message)
 }
 
+// Execute missing godoc.
 func (g GitCmd) Execute(args ...string) ([]string, []string, error) {
 
 	// set log prefix and log start and end
@@ -132,6 +136,7 @@ func (g GitCmd) Root() string {
 	return string(stdout[0])
 }
 
+// Commit missing godoc.
 func (g GitCmd) Commit(message string, args ...string) ([]string, []string, error) {
 	log_prefix := g.Prefix()
 	log.Debugf("%s: start", log_prefix)

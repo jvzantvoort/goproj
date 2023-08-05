@@ -9,20 +9,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// CreateSubCmd missing godoc.
 type CreateSubCmd struct {
 	projecttype string
 	projectname string
 	verbose     bool
 }
 
+// Name missing godoc.
 func (*CreateSubCmd) Name() string {
 	return "create"
 }
 
+// Synopsis missing godoc.
 func (*CreateSubCmd) Synopsis() string {
 	return "Create a new project"
 }
 
+// Usage missing godoc.
 func (c *CreateSubCmd) Usage() string {
 	filename := fmt.Sprintf("messages/usage_%s", c.Name())
 	msgstr, err := Content.ReadFile(filename)
@@ -33,6 +37,7 @@ func (c *CreateSubCmd) Usage() string {
 	return string(msgstr)
 }
 
+// SetFlags missing godoc.
 func (c *CreateSubCmd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.projecttype, "projecttype", "default", "Type of project")
 	f.StringVar(&c.projecttype, "t", "default", "Type of project")
@@ -41,6 +46,7 @@ func (c *CreateSubCmd) SetFlags(f *flag.FlagSet) {
 	f.BoolVar(&c.verbose, "v", false, "Verbose logging")
 }
 
+// Execute missing godoc.
 func (c *CreateSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	if c.verbose {

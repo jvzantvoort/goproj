@@ -6,9 +6,11 @@ import (
 	"fmt"
 
 	"github.com/google/subcommands"
+	"github.com/jvzantvoort/goproj/utils"
 	log "github.com/sirupsen/logrus"
 )
 
+// ArchiveSubCmd missing godoc.
 type ArchiveSubCmd struct {
 	projecttype string
 	projectname string
@@ -16,14 +18,17 @@ type ArchiveSubCmd struct {
 	verbose     bool
 }
 
+// Name missing godoc.
 func (*ArchiveSubCmd) Name() string {
 	return "archive"
 }
 
+// Synopsis missing godoc.
 func (*ArchiveSubCmd) Synopsis() string {
 	return "Archive a project"
 }
 
+// Usage missing godoc.
 func (c *ArchiveSubCmd) Usage() string {
 	filename := fmt.Sprintf("messages/usage_%s", c.Name())
 	msgstr, err := Content.ReadFile(filename)
@@ -34,6 +39,7 @@ func (c *ArchiveSubCmd) Usage() string {
 	return string(msgstr)
 }
 
+// SetFlags missing godoc.
 func (c *ArchiveSubCmd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.archivename, "archivename", "", "Archive file")
 	f.StringVar(&c.archivename, "a", "", "Archive file")
@@ -42,6 +48,7 @@ func (c *ArchiveSubCmd) SetFlags(f *flag.FlagSet) {
 	f.BoolVar(&c.verbose, "v", false, "Verbose logging")
 }
 
+// Execute missing godoc.
 func (c *ArchiveSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	if c.verbose {
@@ -53,6 +60,9 @@ func (c *ArchiveSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interfa
 	if len(c.projectname) == 0 {
 		log.Fatalf("no name provided")
 	}
+
+	simperr := fmt.Errorf("some error")
+	utils.PrintFatal("lala %s", simperr)
 
 	log.Debugln("End")
 

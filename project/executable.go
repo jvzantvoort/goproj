@@ -7,12 +7,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Executable missing godoc.
 type Executable struct {
 	PathToScript string
 	OS           string
 	Extensions   []string
 }
 
+// LookupExt missing godoc.
 func (e Executable) LookupExt() (string, error) {
 	for _, ext := range e.Extensions {
 		log.Debugf("check extension: %s for %s", ext, e.PathToScript)
@@ -30,14 +32,17 @@ func (e Executable) LookupExt() (string, error) {
 	return e.PathToScript, ErrFileNotFound
 }
 
+// PrependExt missing godoc.
 func (e *Executable) PrependExt(extstr string) {
 	e.Extensions = append([]string{extstr}, e.Extensions...)
 }
 
+// AppendExt missing godoc.
 func (e *Executable) AppendExt(extstr string) {
 	e.Extensions = append(e.Extensions, extstr)
 }
 
+// NewExecutable missing godoc.
 func NewExecutable(command string, extensions ...string) *Executable {
 	retv := &Executable{}
 	retv.PathToScript = command

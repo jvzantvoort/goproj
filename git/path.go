@@ -1,5 +1,5 @@
 // PATH type handling.
-package commands
+package git
 
 import (
 	"fmt"
@@ -12,18 +12,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Path missing godoc.
 type Path struct {
 	Type        string
 	Home        string
 	Directories []string
 }
 
+// Prefix missing godoc.
 func (p Path) Prefix() string {
 	pc, _, _, _ := runtime.Caller(1)
 	elements := strings.Split(runtime.FuncForPC(pc).Name(), ".")
 	return fmt.Sprintf("%s[%s]", elements[len(elements)-1], p.Type)
 }
 
+// HavePath missing godoc.
 func (p Path) HavePath(inputdir string) bool {
 	log_prefix := p.Prefix()
 	log.Debugf("%s: start", log_prefix)
@@ -67,6 +70,7 @@ func (p *Path) AppendPath(inputdir string) error {
 	return nil
 }
 
+// PrependPath missing godoc.
 func (p *Path) PrependPath(inputdir string) error {
 	log_prefix := p.Prefix()
 	log.Debugf("%s: start", log_prefix)
@@ -91,6 +95,7 @@ func (p *Path) PrependPath(inputdir string) error {
 	return nil
 }
 
+// Import missing godoc.
 func (p *Path) Import(path string) {
 	log_prefix := p.Prefix()
 	log.Debugf("%s: start", log_prefix)
@@ -103,6 +108,7 @@ func (p *Path) Import(path string) {
 	}
 }
 
+// IsEmpty missing godoc.
 func (p Path) IsEmpty() bool {
 	if len(p.Directories) == 0 {
 		return true
@@ -111,6 +117,7 @@ func (p Path) IsEmpty() bool {
 	}
 }
 
+// ReturnExport missing godoc.
 func (p Path) ReturnExport() string {
 	return fmt.Sprintf("export %s=\"%s\"", p.Type, strings.Join(p.Directories, ":"))
 
@@ -128,6 +135,7 @@ func (p Path) targetExists(targetpath string) bool {
 	return true
 }
 
+// Lookup missing godoc.
 func (p Path) Lookup(target string) (string, error) {
 	log_prefix := p.Prefix()
 	log.Debugf("%s: start", log_prefix)
@@ -148,6 +156,7 @@ func (p Path) Lookup(target string) (string, error) {
 	return retv, err
 }
 
+// LookupMulti missing godoc.
 func (p Path) LookupMulti(targets ...string) (string, error) {
 	for _, target := range targets {
 		if result, err := p.Lookup(target); err != nil {
@@ -157,6 +166,7 @@ func (p Path) LookupMulti(targets ...string) (string, error) {
 	return "", fmt.Errorf("Targets not found")
 }
 
+// MapGetPlatform missing godoc.
 func (p Path) MapGetPlatform(pathmap map[string]string) (string, error) {
 	log_prefix := p.Prefix()
 	log.Debugf("%s: start", log_prefix)
@@ -197,6 +207,7 @@ func (p Path) LookupPlatform(pathmap map[string]string) (string, error) {
 	return "", fmt.Errorf("Target not found")
 }
 
+// NewPath missing godoc.
 func NewPath(pathname string) *Path {
 	retv := &Path{}
 	retv.Type = pathname

@@ -10,6 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Functions missing godoc.
 type Functions struct {
 	Cwd       string
 	ToolsPath string
@@ -18,6 +19,7 @@ type Functions struct {
 
 type fn func(...string) ([]string, []string, error)
 
+// NewFunctions missing godoc.
 func NewFunctions(locations Locations) *Functions {
 	retv := &Functions{}
 	retv.Locations = locations
@@ -25,15 +27,18 @@ func NewFunctions(locations Locations) *Functions {
 	return retv
 }
 
+// Which missing godoc.
 func (f Functions) Which(command string) string {
 	return path.Join(f.Locations.ToolsPath(), command)
 }
 
+// LookupExt missing godoc.
 func (f Functions) LookupExt(command string) (string, error) {
 	executable := NewExecutable(command)
 	return executable.LookupExt()
 }
 
+// Execute missing godoc.
 func (f Functions) Execute(command string, args ...string) ([]string, []string, error) {
 	var err error
 	var msg string
@@ -89,6 +94,7 @@ func (f Functions) Execute(command string, args ...string) ([]string, []string, 
 	return stdout_list, stderr_list, err
 }
 
+// ExecNonFatal missing godoc.
 func ExecNonFatal(f fn, args ...string) {
 	stdout_list, stderr_list, err := f(args...)
 	for _, line := range stdout_list {
@@ -105,44 +111,54 @@ func ExecNonFatal(f fn, args ...string) {
 
 }
 
+// Setup missing godoc.
 func (f Functions) Setup(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("setup"), args...)
 }
 
+// Teardown missing godoc.
 func (f Functions) Teardown(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("teardown"), args...)
 }
 
+// Status missing godoc.
 func (f Functions) Status(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("status"), args...)
 }
 
+// Backup missing godoc.
 func (f Functions) Backup(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("backup"), args...)
 }
 
+// Build missing godoc.
 func (f Functions) Build(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("build"), args...)
 }
 
+// Package missing godoc.
 func (f Functions) Package(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("package"), args...)
 }
 
+// Publish missing godoc.
 func (f Functions) Publish(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("publish"), args...)
 }
 
+// Test missing godoc.
 func (f Functions) Test(args ...string) ([]string, []string, error) {
 	return f.Execute(f.Which("test"), args...)
 }
 
+// SetupProject missing godoc.
 func (f Functions) SetupProject(args ...string) {
 	MkdirAll(f.Locations.ToolsPath(), 0755)
 	MkdirAll(f.Locations.BinPath(), 0755)
 	ExecNonFatal(f.Setup, args...)
 }
 
+// BuildProject missing godoc.
 func (f Functions) BuildProject(args ...string) {
 	MkdirAll(f.Locations.ToolsPath(), 0755)
 	MkdirAll(f.Locations.BinPath(), 0755)

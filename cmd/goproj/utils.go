@@ -4,6 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// TestResult missing godoc.
 func TestResult(msg string, err error) bool {
 	fmtmsg := "%-80s %s"
 	if err != nil {

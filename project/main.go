@@ -23,5 +23,4 @@ Project
 	  Package
 	  Test
 	Session Management
-*/
-package project
+*/package project

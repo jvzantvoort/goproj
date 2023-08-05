@@ -2,121 +2,235 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
-	"os/user"
 	"path"
-	"path/filepath"
 	"runtime"
-	"strings"
+
+	"github.com/jvzantvoort/goproj/utils"
+	log "github.com/sirupsen/logrus"
 )
 
+const (
+	SettingsFile string = "settings.json"
+)
+
+// UserConfig
+
+type UserConfig struct {
+	MailAddress string `json:"mailaddress"`
+	Company     string `json:"company"`
+	Copyright   string `json:"copyright"`
+	License     string `json:"license"`
+	User        string `json:"user"`
+	Username    string `json:"username"`
+}
+
+// MainConfig configuration for goproj
 type MainConfig struct {
-	HomeDir            string
-	TmuxDir            string
-	ProjTypeConfigDir  string
-	ProjTypeConfigMode int
+	ForceInit      bool
+	HomeDir        string
+	ArchiveDir     string
+	ConfigDir      string
+	TemplatesDir   string
+	ConfigDirPerms int
+	AppVersion     string     `json:"version"`
+	UserConfig     UserConfig `json:"user"`
 }
 
-func (m MainConfig) Prefix() string {
-	pc, _, _, _ := runtime.Caller(1)
-	elements := strings.Split(runtime.FuncForPC(pc).Name(), ".")
-	return fmt.Sprintf("GitCmd.%s", elements[len(elements)-1])
-}
-
-// ExpandHome expand the tilde in a given path.
-func (m MainConfig) ExpandHome(pathstr string) (string, error) {
-
-	m.GetHomeDir()
-
-	if len(pathstr) == 0 {
-		return pathstr, nil
-	}
-
-	if pathstr[0] != '~' {
-		return pathstr, nil
-	}
-
-	return filepath.Join(m.HomeDir, pathstr[1:]), nil
-
-}
-
-func (m MainConfig) MkdirAll(path string, mode int) {
-	log_prefix := g.Prefix()
-	log.Debugf("%s: start", log_prefix)
-	defer log.Debugf("%s: end", log_prefix)
-
-	mode_oct := os.FileMode(mode)
-	os.MkdirAll(path, mode_oct)
-
-}
-
+// GetHomeDir get the user's homedir
 func (m *MainConfig) GetHomeDir() string {
 	if len(m.HomeDir) != 0 {
 		return m.HomeDir
 	}
-	usr, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
-
-	m.HomeDir = usr.HomeDir
+	m.HomeDir = utils.GetHomeDir()
 
 	return m.HomeDir
 }
 
-func (m *MainConfig) GetTmuxDir() string {
-	if len(m.TmuxDir) != 0 {
-		return m.TmuxDir
-	}
-	m.TmuxDir = path.Join(m.ProjTypeConfigDir, "tmux")
-	return m.TmuxDir
+func (m MainConfig) ConfigFile(name string) string {
+	return path.Join(m.ConfigDir, name)
 }
 
-func (m MainConfig) GetProjTypeConfigDir() (string, int) {
-
+func (m *MainConfig) GetConfigDir() string {
 	// return cached value
-	if len(m.ProjTypeConfigDir) != 0 {
-		return m.ProjTypeConfigDir, m.ProjTypeConfigMode
-	}
-
-	m.GetHomeDir() // set homedir
-
-	retv := ""
-	mode := 0755
-
-	if runtime.GOOS == "windows" {
-		mode = 0777
-		retv = path.Join(m.HomeDir, "GOProj")
-	} else {
-		retv = path.Join(m.HomeDir, ".config", "goproj")
+	if len(m.ConfigDir) != 0 {
+		return m.ConfigDir
 	}
 
 	// check environment variable
-	goproj_path, goproj_path_set := os.LookupEnv("GOPROJ_PATH")
+	goproj_path, goproj_path_set := os.LookupEnv("GOPROJ_CONFIG_DIR")
 
 	if goproj_path_set {
-		retv = goproj_path
+		m.ConfigDir = goproj_path
+		return m.ConfigDir
 	}
 
-	m.ProjTypeConfigDir = retv
-	m.ProjTypeConfigMode = mode
+	m.GetHomeDir()
 
-	return m.ProjTypeConfigDir, m.ProjTypeConfigMode
+	m.ConfigDir = path.Join(m.HomeDir, ".config", "goproj")
+
+	if runtime.GOOS == "windows" {
+		m.ConfigDir = path.Join(m.HomeDir, "GOProj")
+	}
+
+	return m.ConfigDir
 }
 
+func (m *MainConfig) GetTemplatesDir() string {
+	if len(m.TemplatesDir) != 0 {
+		return m.TemplatesDir
+	}
+	m.TemplatesDir = path.Join(m.GetConfigDir(), "templates.d")
+	return m.TemplatesDir
+}
+
+func (m *MainConfig) GetArchiveDir() string {
+	// return cached value
+	if len(m.ArchiveDir) != 0 {
+		return m.ArchiveDir
+	}
+
+	// check environment variable
+	goproj_path, goproj_path_set := os.LookupEnv("GOPROJ_ARCHIVE_DIR")
+
+	if goproj_path_set {
+		m.ArchiveDir = goproj_path
+		return m.ArchiveDir
+	}
+
+	m.GetHomeDir()
+
+	m.ArchiveDir = path.Join(m.HomeDir, "Archive", "goproj")
+
+	if runtime.GOOS == "windows" {
+		m.ArchiveDir = path.Join(m.HomeDir, "GOProjArchive")
+	}
+
+	return m.ArchiveDir
+}
+
+// Init initialize the MainConfig struct
+func (m *MainConfig) Init() {
+
+	m.GetHomeDir()
+
+	m.GetConfigDir()
+
+	m.GetArchiveDir()
+
+	m.GetTemplatesDir()
+
+	if runtime.GOOS == "windows" {
+		m.ConfigDirPerms = 0777
+	} else {
+		m.ConfigDirPerms = 0755
+	}
+
+	if !m.ForceInit {
+		m.ReadFromFile(SettingsFile)
+	}
+}
+
+func (m MainConfig) Save() {
+	m.WriteToFile(SettingsFile)
+}
+
+// CreateDirs create the main config dir
+func (m MainConfig) CreateDirs() {
+	mode := m.ConfigDirPerms
+
+	err := utils.MkdirP(m.ConfigDir, int(mode))
+	if err != nil {
+		log.Errorf("Failed to create dir %s, %v", m.ConfigDir, err)
+	}
+
+	err = utils.MkdirP(m.ArchiveDir, int(mode))
+	if err != nil {
+		log.Errorf("Failed to create dir %s, %v", m.ArchiveDir, err)
+	}
+
+	err = utils.MkdirP(m.TemplatesDir, int(mode))
+	if err != nil {
+		log.Errorf("Failed to create dir %s, %v", m.TemplatesDir, err)
+	}
+}
+
+// File handling
+//
+// Read
+func (m *MainConfig) Read(reader io.Reader) error {
+	data, err := io.ReadAll(reader)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(data, &m)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Write
+func (m MainConfig) Write(writer io.Writer) error {
+	jsonString, err := json.MarshalIndent(m, "", "  ")
+	if err == nil {
+		fmt.Fprint(writer, string(jsonString))
+		fmt.Fprintf(writer, "\n")
+	}
+	return err
+
+}
+
+// ReadFromFile
+func (m *MainConfig) ReadFromFile(name string) error {
+
+	fileh, err := os.Open(m.ConfigFile(name))
+	defer fileh.Close()
+
+	if err != nil {
+		return err
+	}
+
+	return m.Read(fileh)
+}
+
+// WriteToFile
+func (m MainConfig) WriteToFile(name string) error {
+	log.Debugf("save to: %s, start", m.ConfigFile(name))
+	defer log.Debugf("save to: %s, end", m.ConfigFile(name))
+
+	fileh, err := os.OpenFile(m.ConfigFile(name), os.O_WRONLY|os.O_CREATE, 0644)
+	defer fileh.Close()
+
+	if err != nil {
+		return err
+	}
+	return m.Write(fileh)
+}
+
+func (m *MainConfig) ResetConfig() {
+	m.ForceInit = true
+	m.Init()
+	m.CreateDirs()
+}
+
+// NewMainConfig initialize a MainConfig and initialize it.
+//
+//	mc := config.NewMainConfig()
+//	fmt.Printf("config dir: %s\n", mc.ConfigDir)
 func NewMainConfig() *MainConfig {
+	retv := &MainConfig{}
+	retv.ForceInit = false
 
-	log_prefix := g.Prefix()
-	log.Debugf("%s: start", log_prefix)
-	defer log.Debugf("%s: end", log_prefix)
+	retv.Init()
 
-	v := &MainConfig{}
+	retv.CreateDirs()
 
-	_, mode := v.GetProjTypeConfigDir()
-
-	v.MkdirAll(v.ProjTypeConfigDir, mode)
-
-	return v
+	return retv
 
 }

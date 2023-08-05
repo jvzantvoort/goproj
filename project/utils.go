@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// OneOrLess missing godoc.
 func OneOrLess(args ...string) (string, error) {
 	if len(args) == 0 {
 		return "", ErrListEmpty
@@ -19,6 +20,8 @@ func OneOrLess(args ...string) (string, error) {
 
 	return "", ErrListTooLong
 }
+
+// MkdirAll missing godoc.
 func MkdirAll(path string, mode int) {
 
 	log.Debugf("MkdirAll: start")
@@ -42,6 +45,7 @@ func MkdirAll(path string, mode int) {
 
 }
 
+// Buffer2Slice missing godoc.
 func Buffer2Slice(stream io.ReadCloser) []string {
 	retv := []string{}
 
@@ -55,6 +59,7 @@ func Buffer2Slice(stream io.ReadCloser) []string {
 	return retv
 }
 
+// PrintError missing godoc.
 func PrintError(fmtstr string, err error) error {
 	if err == nil {
 		return err
@@ -63,6 +68,7 @@ func PrintError(fmtstr string, err error) error {
 	return err
 }
 
+// PrintFatal missing godoc.
 func PrintFatal(fmtstr string, err error) error {
 	if err == nil {
 		return err
@@ -71,6 +77,7 @@ func PrintFatal(fmtstr string, err error) error {
 	return err
 }
 
+// PanicOnError missing godoc.
 func PanicOnError(fmtstr string, err error) {
 	PrintError(fmtstr, err)
 	if err != nil {
@@ -78,6 +85,7 @@ func PanicOnError(fmtstr string, err error) {
 	}
 }
 
+// FileExists missing godoc.
 func FileExists(fpath string) (bool, os.FileInfo) {
 	info, err := os.Stat(fpath)
 	if err != nil {
@@ -92,6 +100,7 @@ func FileExists(fpath string) (bool, os.FileInfo) {
 	return true, info
 }
 
+// FileIsExecutable missing godoc.
 func FileIsExecutable(fpath string) bool {
 	exists, info := FileExists(fpath)
 	if !exists {
@@ -124,6 +133,7 @@ func FileIsExecutable(fpath string) bool {
 	return false
 }
 
+// Reverse missing godoc.
 func Reverse(input []string) []string {
 	var output []string
 

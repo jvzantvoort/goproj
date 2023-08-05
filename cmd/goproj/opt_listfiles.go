@@ -9,19 +9,23 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// ListFilesSubCmd missing godoc.
 type ListFilesSubCmd struct {
 	projectname string
 	verbose     bool
 }
 
+// Name missing godoc.
 func (*ListFilesSubCmd) Name() string {
 	return "listfiles"
 }
 
+// Synopsis missing godoc.
 func (*ListFilesSubCmd) Synopsis() string {
 	return "Archive a project"
 }
 
+// Usage missing godoc.
 func (c *ListFilesSubCmd) Usage() string {
 	filename := fmt.Sprintf("messages/usage_%s", c.Name())
 	msgstr, err := Content.ReadFile(filename)
@@ -32,12 +36,14 @@ func (c *ListFilesSubCmd) Usage() string {
 	return string(msgstr)
 }
 
+// SetFlags missing godoc.
 func (c *ListFilesSubCmd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.projectname, "projectname", "", "Name of project")
 	f.StringVar(&c.projectname, "n", "", "Name of project")
 	f.BoolVar(&c.verbose, "v", false, "Verbose logging")
 }
 
+// Execute missing godoc.
 func (c *ListFilesSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interface{}) subcommands.ExitStatus {
 
 	if c.verbose {

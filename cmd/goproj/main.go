@@ -1,8 +1,8 @@
 package main
 
 import (
-
 	"embed"
+	"fmt"
 
 	"context"
 	"flag"
@@ -12,6 +12,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Content missing godoc.
+//
 //go:embed messages/*
 var Content embed.FS
 
@@ -30,22 +32,35 @@ func init() {
 	log.SetLevel(log.InfoLevel)
 }
 
+func GetUsage(name string) string {
+	filename := fmt.Sprintf("messages/usage_%s", name)
+	msgstr, err := Content.ReadFile(filename)
+	if err != nil {
+		log.Error(err)
+		msgstr = []byte("undefined")
+	}
+	return string(msgstr)
+}
+
 func main() {
 
 	subcommands.Register(subcommands.HelpCommand(), "")
 	subcommands.Register(subcommands.FlagsCommand(), "")
 	subcommands.Register(subcommands.CommandsCommand(), "")
 
+	subcommands.Register(&ConfigSubCmd{}, "appl")
+
 	subcommands.Register(&SetupSubCmd{}, "update")
 
-	subcommands.Register(&CreateSubCmd{}, "")
-	subcommands.Register(&EditSubCmd{}, "")
-	subcommands.Register(&ListSubCmd{}, "")
-	subcommands.Register(&ArchiveSubCmd{}, "")
-	subcommands.Register(&InitProjSubCmd{}, "")
-	subcommands.Register(&ShellProfileCmd{}, "")
-	subcommands.Register(&ListFilesSubCmd{}, "")
-	subcommands.Register(&ResumeSubCmd{}, "")
+	subcommands.Register(&CreateSubCmd{}, "proj")
+	subcommands.Register(&EditSubCmd{}, "proj")
+	subcommands.Register(&ListSubCmd{}, "proj")
+	subcommands.Register(&ArchiveSubCmd{}, "proj")
+	subcommands.Register(&ShellProfileCmd{}, "proj")
+	subcommands.Register(&ListFilesSubCmd{}, "proj")
+	subcommands.Register(&ResumeSubCmd{}, "proj")
+
+	subcommands.Register(&InitProjSubCmd{}, "type")
 
 	flag.Parse()
 	ctx := context.Background()

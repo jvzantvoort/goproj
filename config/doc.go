@@ -7,6 +7,5 @@
 //
 //	mainconfig := NewMainConfig()
 //	fmt.Printf("home dir: %s", mainconfig.HomeDir)
-//	fmt.Printf("tmux dir: %s", mainconfig.TmuxDir)
-//	fmt.Printf("project type config dir: %s", mainconfig.ProjTypeConfigDir)
+//	fmt.Printf("project type config dir: %s", mainconfig.ConfigDir)
 package config
