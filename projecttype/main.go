@@ -17,7 +17,7 @@ import (
 
 // Content missing godoc.
 //
-//go:embed messages/*
+//go:embed templates/*
 var Content embed.FS
 
 var mainconfig = config.NewMainConfig()

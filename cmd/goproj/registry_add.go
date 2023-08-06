@@ -20,13 +20,12 @@ var AddRegCmd = &cobra.Command{
 }
 
 func handleAddRegCmd(cmd *cobra.Command, args []string) {
-	log.Debug("%s: start", cmd.Use)
-	defer log.Debug("%s: end", cmd.Use)
-
 	var path string
 	if verbose {
 		log.SetLevel(log.DebugLevel)
 	}
+	log.Debugf("%s: start", cmd.Use)
+	defer log.Debugf("%s: end", cmd.Use)
 
 	reg := registry.NewRegistry()
 

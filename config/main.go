@@ -211,6 +211,8 @@ func (m *MainConfig) Init() {
 }
 
 func (m MainConfig) Save() {
+	log.Debugf("Write to %s", SettingsFile)
+	defer log.Debugf("Write to %s, end", SettingsFile)
 	m.WriteToFile(SettingsFile)
 }
 

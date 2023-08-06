@@ -15,12 +15,11 @@ var ArchiveProjCmd = &cobra.Command{
 }
 
 func handleArchiveProjCmd(cmd *cobra.Command, args []string) {
-	log.Debug("%s: start", cmd.Use)
-	defer log.Debug("%s: end", cmd.Use)
-
 	if verbose {
 		log.SetLevel(log.DebugLevel)
 	}
+	log.Debugf("%s: start", cmd.Use)
+	defer log.Debugf("%s: end", cmd.Use)
 
 	// name, _ := cmd.Flags().GetString("name")
 }
