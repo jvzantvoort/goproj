@@ -51,6 +51,7 @@ func main() {
 	subcommands.Register(&ConfigSubCmd{}, "application")
 
 	// project
+	subcommands.Register(&ProjectSubCmd{}, "project")
 	subcommands.Register(&SetupSubCmd{}, "project")
 	subcommands.Register(&CreateSubCmd{}, "project")
 	subcommands.Register(&EditSubCmd{}, "project")
@@ -58,7 +59,10 @@ func main() {
 	subcommands.Register(&ShellProfileCmd{}, "project")
 
 	subcommands.Register(&ListSubCmd{}, "registry")
+
 	subcommands.Register(&RegisterSubCmd{}, "registry")
+	subcommands.Alias("lala", &RegisterSubCmd{})
+
 	subcommands.Register(&RegIndexSubCmd{}, "registry")
 
 	subcommands.Register(&InitProjSubCmd{}, "type")

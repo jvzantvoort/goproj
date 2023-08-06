@@ -98,19 +98,30 @@ func (p Project) WriteToFile() error {
 // Name missing godoc.
 func (p *Project) Name(args ...string) string {
 	if option, err := OneOrLess(args...); err == nil {
-		log.Debugf("set name to %s", option)
-		p.MetaData.Project.Name = option
+		p.SetName(option)
 	}
 	return p.MetaData.Project.Name
+}
+
+func (p *Project) SetName(name string) {
+	log.Debugf("set name to %s", name)
+	p.MetaData.Project.Name = name
 }
 
 // Description missing godoc.
 func (p *Project) Description(args ...string) string {
 	if option, err := OneOrLess(args...); err == nil {
-		log.Debugf("set description to %s", option)
-		p.MetaData.Project.Description = option
+		p.SetDescription(option)
 	}
 	return p.MetaData.Project.Description
+}
+
+func (p *Project) SetDescription(description string) {
+	log.Debugf("set description to %s", description)
+	p.MetaData.Project.Description = description
+}
+
+func (p Project) Save() {
 }
 
 // NewProject missing godoc.
