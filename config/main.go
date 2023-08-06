@@ -41,6 +41,81 @@ type MainConfig struct {
 	UserConfig     UserConfig `json:"user"`
 }
 
+func DefaultString(args ...string) string {
+	for _, def := range args {
+		if len(def) != 0 {
+			return def
+		}
+	}
+	return ""
+}
+
+func (u *UserConfig) SetMailAddress(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.MailAddress) == 0 {
+		return fmt.Errorf("MailAddress not set")
+	}
+	if len(newval) != 0 {
+		u.MailAddress = newval
+	}
+	return nil
+}
+
+func (u *UserConfig) SetCompany(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.Company) == 0 {
+		return fmt.Errorf("Company not set")
+	}
+	if len(newval) != 0 {
+		u.Company = newval
+	}
+	return nil
+}
+
+func (u *UserConfig) SetCopyright(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.Copyright) == 0 {
+		return fmt.Errorf("Copyright not set")
+	}
+	if len(newval) != 0 {
+		u.Copyright = newval
+	}
+	return nil
+}
+
+func (u *UserConfig) SetLicense(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.License) == 0 {
+		return fmt.Errorf("License not set")
+	}
+	if len(newval) != 0 {
+		u.License = newval
+	}
+	return nil
+}
+
+func (u *UserConfig) SetUser(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.User) == 0 {
+		return fmt.Errorf("User not set")
+	}
+	if len(newval) != 0 {
+		u.User = newval
+	}
+	return nil
+}
+
+func (u *UserConfig) SetUsername(args ...string) error {
+	newval := DefaultString(args...)
+	if len(newval) == 0 && len(u.Username) == 0 {
+		return fmt.Errorf("Username not set")
+	}
+	if len(newval) != 0 {
+		u.Username = newval
+	}
+	return nil
+}
+
 // GetHomeDir get the user's homedir
 func (m *MainConfig) GetHomeDir() string {
 	if len(m.HomeDir) != 0 {

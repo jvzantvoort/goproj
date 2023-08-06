@@ -30,5 +30,7 @@ func init() {
 	// archive
 	projectCmd.AddCommand(ArchiveProjCmd)
 	ArchiveProjCmd.Flags().StringP("name", "n", "", "project name")
+	ArchiveProjCmd.Flags().StringP("archivename", "a", "", "Archive file")
+	ArchiveProjCmd.MarkFlagRequired("name")
 
 }
