@@ -60,7 +60,7 @@ func (p Project) WriteTable(writer io.Writer) {
 }
 
 func (p Project) IsGoProj() bool {
-	info, err := os.Stat(p.Locations.RootDir)
+	info, err := os.Stat(p.Locations.ConfigDir())
 	if err != nil {
 		return false
 	}
