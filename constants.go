@@ -2,5 +2,5 @@ package goproj
 
 // Version missing godoc.
 const (
-	Version string = "0.3.0"
+	Version string = "0.4.0"
 )
