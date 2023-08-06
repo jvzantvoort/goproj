@@ -24,6 +24,18 @@ const (
 )
 ```
 
+#### func  DefaultString
+
+```go
+func DefaultString(args ...string) string
+```
+
+#### func  UserConfigUI
+
+```go
+func UserConfigUI(cfg *MainConfig)
+```
+
 #### type MainConfig
 
 ```go
@@ -161,4 +173,41 @@ type UserConfig struct {
 	User        string `json:"user"`
 	Username    string `json:"username"`
 }
+```
+
+
+#### func (*UserConfig) SetCompany
+
+```go
+func (u *UserConfig) SetCompany(args ...string) error
+```
+
+#### func (*UserConfig) SetCopyright
+
+```go
+func (u *UserConfig) SetCopyright(args ...string) error
+```
+
+#### func (*UserConfig) SetLicense
+
+```go
+func (u *UserConfig) SetLicense(args ...string) error
+```
+
+#### func (*UserConfig) SetMailAddress
+
+```go
+func (u *UserConfig) SetMailAddress(args ...string) error
+```
+
+#### func (*UserConfig) SetUser
+
+```go
+func (u *UserConfig) SetUser(args ...string) error
+```
+
+#### func (*UserConfig) SetUsername
+
+```go
+func (u *UserConfig) SetUsername(args ...string) error
 ```

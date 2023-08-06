@@ -35,6 +35,13 @@ func (r Registry) GetConfigFile() string
 ```
 GetConfigFile returns the config file path from the registry
 
+#### func (*Registry) Index
+
+```go
+func (r *Registry) Index() error
+```
+Index scan the homedir and add goproj compatible projects
+
 #### func (*Registry) List
 
 ```go
@@ -47,6 +54,13 @@ func (r *Registry) List() []string
 func (r *Registry) Load() error
 ```
 Load loads the registry data from the registry file
+
+#### func (*Registry) Prune
+
+```go
+func (r *Registry) Prune() error
+```
+Prune removes all non-existing projects from the registry
 
 #### func (*Registry) Read
 
@@ -91,3 +105,9 @@ SetLastUpdated sets the last updated time in the registry data
 func (r Registry) Write(writer io.Writer) error
 ```
 Write writes the registry data to the registry file
+
+#### func (Registry) WriteTable
+
+```go
+func (r Registry) WriteTable(writer io.Writer)
+```

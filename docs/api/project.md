@@ -402,6 +402,12 @@ func (p *Project) Description(args ...string) string
 ```
 Description missing godoc.
 
+#### func (Project) IsGoProj
+
+```go
+func (p Project) IsGoProj() bool
+```
+
 #### func (*Project) Name
 
 ```go
@@ -424,6 +430,24 @@ Read
 func (p *Project) ReadFromFile() error
 ```
 ReadFromFile
+
+#### func (Project) Save
+
+```go
+func (p Project) Save()
+```
+
+#### func (*Project) SetDescription
+
+```go
+func (p *Project) SetDescription(description string)
+```
+
+#### func (*Project) SetName
+
+```go
+func (p *Project) SetName(name string)
+```
 
 #### func (Project) Write
 
