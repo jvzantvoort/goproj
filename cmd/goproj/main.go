@@ -59,6 +59,7 @@ func main() {
 
 	subcommands.Register(&ListSubCmd{}, "registry")
 	subcommands.Register(&RegisterSubCmd{}, "registry")
+	subcommands.Register(&RegIndexSubCmd{}, "registry")
 
 	subcommands.Register(&InitProjSubCmd{}, "type")
 

@@ -21,7 +21,7 @@ type RegisterSubCmd struct {
 
 // Name a function to return the name of the command
 func (*RegisterSubCmd) Name() string {
-	return "register"
+	return "reg"
 }
 
 // Synopsis a function to return the synopsis of the command
@@ -77,9 +77,15 @@ func (c *RegisterSubCmd) Execute(_ context.Context, f *flag.FlagSet, _ ...interf
 		reg.Register(*project)
 		reg.Save()
 	case "list":
-		for name, proj := range reg.Projects {
-			fmt.Printf("%s %s\n", name, proj.Description())
-		}
+		reg.WriteTable(os.Stdout)
+	case "remove":
+		name := remainder[0]
+		remainder = remainder[1:]
+		reg.Remove(name)
+		reg.Save()
+	case "index":
+		reg.Index()
+		reg.Save()
 	case "info":
 		name := remainder[0]
 		remainder = remainder[1:]

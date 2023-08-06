@@ -4,11 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
+	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/jvzantvoort/goproj/config"
 	"github.com/jvzantvoort/goproj/project"
+	"github.com/jvzantvoort/goproj/utils"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 type Registry struct {
@@ -32,6 +38,18 @@ func (r *Registry) List() []string {
 		retv = append(retv, name)
 	}
 	return retv
+}
+
+func (r Registry) WriteTable(writer io.Writer) {
+	table := tablewriter.NewWriter(writer)
+	table.SetHeader([]string{"Name", "Value"})
+
+	for _, project := range r.Projects {
+		table.Append([]string{project.Name(), project.Description()})
+	}
+	table.SetHeaderLine(true)
+	table.SetBorder(false)
+	table.Render()
 }
 
 // Remove removes a project from the registry data
@@ -89,6 +107,41 @@ func (r *Registry) Save() error {
 	r.SetLastUpdated()
 
 	return r.Write(fileh)
+}
+
+// Prune removes all non-existing projects from the registry
+func (r *Registry) Prune() error {
+	for name, project := range r.Projects {
+		if !project.IsGoProj() {
+			delete(r.Projects, name)
+		}
+	}
+	return nil
+}
+
+// Index scan the homedir and add goproj compatible projects
+func (r *Registry) Index() error {
+
+	basedir := utils.GetHomeDir()
+
+	filewalk_error := filepath.Walk(basedir, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() && info.Name() == ".goproj" {
+			projdir := filepath.Dir(path)
+			proj := project.NewProject(projdir)
+			r.Register(*proj)
+		}
+		return nil
+	})
+	if filewalk_error != nil {
+		log.Fatal(filewalk_error)
+		return filewalk_error
+	}
+	r.Prune() // remove non-existing projects
+	r.Save()
+	return nil
 }
 
 // Load	loads the registry data	from the registry file

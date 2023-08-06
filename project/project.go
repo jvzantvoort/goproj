@@ -59,6 +59,14 @@ func (p Project) WriteTable(writer io.Writer) {
 	table.Render()
 }
 
+func (p Project) IsGoProj() bool {
+	info, err := os.Stat(p.Locations.RootDir)
+	if err != nil {
+		return false
+	}
+	return info.IsDir()
+}
+
 // ReadFromFile
 func (p *Project) ReadFromFile() error {
 	settings := p.Locations.ConfigFile()
