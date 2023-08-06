@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/fatih/color v1.13.0
 	github.com/google/subcommands v1.2.0
-	github.com/hashicorp/go-version v1.6.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/olekukonko/tablewriter v0.0.5
