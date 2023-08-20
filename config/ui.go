@@ -5,7 +5,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func UserConfigUI(cfg *MainConfig) {
+func UserConfigUI(cfg *MainConfig) error {
 
 	app := tview.NewApplication()
 
@@ -44,8 +44,6 @@ func UserConfigUI(cfg *MainConfig) {
 		})
 
 	form.SetBorder(true).SetTitle("User Config").SetTitleAlign(tview.AlignLeft)
-	if err := app.EnableMouse(true).SetRoot(form, true).Run(); err != nil {
-		panic(err)
-	}
 
+	return app.EnableMouse(true).SetRoot(form, true).Run()
 }
