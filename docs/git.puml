@@ -1,0 +1,40 @@
+@startuml
+namespace git {
+    class GitCmd << (S,Aquamarine) >> {
+        + Path *Path
+        + Cwd string
+        + Command string
+        + CommandMap <font color=blue>map</font>[string]string
+
+        + Prefix() string
+        + LogDebugf(format string, args ...<font color=blue>interface</font>{}) 
+        + LogFatalf(format string, args ...<font color=blue>interface</font>{}) 
+        + Execute(args ...string) ([]string, []string, error)
+        + URL() string
+        + Branch() string
+        + Root() string
+        + Commit(message string, args ...string) ([]string, []string, error)
+
+    }
+    class Path << (S,Aquamarine) >> {
+        + Type string
+        + Home string
+        + Directories []string
+
+        + Prefix() string
+        + HavePath(inputdir string) bool
+        + AppendPath(inputdir string) error
+        + PrependPath(inputdir string) error
+        + Import(path string) 
+        + IsEmpty() bool
+        + ReturnExport() string
+        + Lookup(target string) (string, error)
+        + LookupMulti(targets ...string) (string, error)
+        + MapGetPlatform(pathmap <font color=blue>map</font>[string]string) (string, error)
+        + LookupPlatform(pathmap <font color=blue>map</font>[string]string) (string, error)
+
+    }
+}
+
+
+@enduml

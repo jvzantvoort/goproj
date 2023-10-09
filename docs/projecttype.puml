@@ -1,0 +1,27 @@
+@startuml
+namespace projecttype {
+    class ProjectTypeConfig << (S,Aquamarine) >> {
+        + ProjectType string
+        + ProjectTypeDir string
+        + Workdir string
+        + Pattern string
+        + SetupActions []string
+        + Files []ProjectTypeFile
+
+        + Describe() 
+        + Write(boxname string, target string) error
+        + Exists(targetpath string) bool
+        + UpdateConfigFile(target string) error
+        + Init(projtypeconfigdir string, projecttype string) error
+
+    }
+    class ProjectTypeFile << (S,Aquamarine) >> {
+        + Name string
+        + Destination string
+        + Mode string
+
+    }
+}
+
+
+@enduml
