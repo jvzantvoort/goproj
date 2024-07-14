@@ -1,0 +1,5 @@
+---
+projecttype: PROJECTTYPE
+workdir: ~/Workspace/{{.ProjectName}}
+pattern: ^.*$
+tmuxcolors: powerline/default/blue

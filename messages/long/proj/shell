@@ -1,0 +1,3 @@
+  eval "$(tmux-project shell)"
+
+shell [-s | -shellname <shell>]

@@ -1,45 +1,66 @@
 package main
 
 import (
-	"context"
-	"flag"
+	"fmt"
 	"os"
-
-	"github.com/google/subcommands"
-	log "github.com/sirupsen/logrus"
+	"os/user"
+	"path"
+	"path/filepath"
 )
 
-func init() {
-	log.SetFormatter(&log.TextFormatter{
-		FullTimestamp:          true,
-		DisableLevelTruncation: true,
-		TimestampFormat:        "2006-01-02 15:04:05",
-	})
-
-	// Output to stdout instead of the default stderr
-	// Can be any io.Writer, see below for File example
-	log.SetOutput(os.Stdout)
-
-	// Only log the warning severity or above.
-	log.SetLevel(log.InfoLevel)
+func main() {
+	Execute()
 }
 
-func main() {
+// GetHomeDir return the homedir
+func GetHomeDir() (string, error) {
+	usr, err := user.Current()
+	if err != nil {
+		return "", err
+	}
 
-	subcommands.Register(subcommands.HelpCommand(), "")
-	subcommands.Register(subcommands.FlagsCommand(), "")
-	subcommands.Register(subcommands.CommandsCommand(), "")
-	subcommands.Register(&CreateSubCmd{}, "")
-	subcommands.Register(&EditSubCmd{}, "")
-	subcommands.Register(&ListSubCmd{}, "")
-	subcommands.Register(&ArchiveSubCmd{}, "")
-	subcommands.Register(&InitProjSubCmd{}, "")
-	subcommands.Register(&ShellProfileCmd{}, "")
-	subcommands.Register(&ListFilesSubCmd{}, "")
-	subcommands.Register(&ResumeSubCmd{}, "")
+	return usr.HomeDir, nil
+}
 
-	flag.Parse()
-	ctx := context.Background()
-	os.Exit(int(subcommands.Execute(ctx)))
+// ExpandHome expand the tilde in a given path.
+func ExpandHome(pathstr string) (string, error) {
 
+	if len(pathstr) == 0 {
+		return pathstr, nil
+	}
+
+	if pathstr[0] != '~' {
+		return pathstr, nil
+	}
+
+	homedir, err := GetHomeDir()
+
+	if err != nil {
+		return pathstr, err
+	}
+
+	return filepath.Join(homedir, pathstr[1:]), nil
+
+}
+
+func GetConfigDir() (string, error) {
+	homedir, err := GetHomeDir()
+	return path.Join(homedir, ".config", "goproj"), err
+
+}
+
+func GetCacheDir() string {
+	homedir, _ := GetHomeDir()
+	return path.Join(homedir, ".cache", "goproj")
+}
+
+func GetArchivePath(name string) string {
+	return path.Join(GetCacheDir(), name)
+}
+
+func ExitOnError(err error) {
+	if err != nil {
+		fmt.Printf("Error:\n\t%s\n\n", err)
+		os.Exit(1)
+	}
 }
