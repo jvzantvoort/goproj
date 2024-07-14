@@ -1,0 +1,1 @@
+Allows tmux-project to be integrated in a shell. For example for bash add the following to the profile (bash is the default).
