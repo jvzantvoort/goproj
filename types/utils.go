@@ -3,7 +3,6 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"text/template"
@@ -31,10 +30,10 @@ func Mkdir(path string) error {
 		if target_stat.IsDir() {
 			return nil
 		}
-		return fmt.Errorf("Target %s exists but is not a directory", path)
+		return fmt.Errorf("target %s exists but is not a directory", path)
 	}
 	if err := os.MkdirAll(path, perm); err != nil {
-		return fmt.Errorf("Directory cannot be created: %s", path)
+		return fmt.Errorf("directory cannot be created: %s", path)
 	}
 	return nil
 }
@@ -76,7 +75,7 @@ func ListProjectTypes(configdir string) []string {
 		return retv
 	}
 
-	targets, err := ioutil.ReadDir(configdir)
+	targets, err := os.ReadDir(configdir)
 	if err != nil {
 		log.Errorf("Error: %s", err)
 		return retv
