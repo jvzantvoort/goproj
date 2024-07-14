@@ -2,9 +2,9 @@ name: Audit the go source
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
 
@@ -24,8 +24,7 @@ jobs:
 
     - name: Build
       run: |
-        go build -v -o build/logging ./cmd/logging
-        go build -v -o build/print_status ./cmd/print_status
+        go build -v -o build/ ./...
 
     - name: Run go vet
       run: go vet ./...

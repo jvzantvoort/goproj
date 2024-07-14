@@ -17,7 +17,7 @@ func ReturnSingleArguments(cmd *cobra.Command, args []string) (string, error) {
 	// We need at least the project name
 	if len(args) != 1 {
 		cmd.Help()
-		return "", fmt.Errorf("Argument missing")
+		return "", fmt.Errorf("argument missing")
 	}
 	return args[0], nil
 }
