@@ -1,0 +1,25 @@
+@startuml
+namespace registry {
+    class Registry << (S,Aquamarine) >> {
+        + Projects <font color=blue>map</font>[string]project.Project
+        + LastUpdated int64
+
+        + Register(p project.Project) 
+        + Get(name string) (project.Project, bool)
+        + List() []string
+        + WriteTable(writer io.Writer) 
+        + Remove(name string) 
+        + Read(reader io.Reader) error
+        + Write(writer io.Writer) error
+        + SetLastUpdated() 
+        + GetConfigFile() string
+        + Save() error
+        + Prune() error
+        + Index() error
+        + Load() error
+
+    }
+}
+
+
+@enduml
