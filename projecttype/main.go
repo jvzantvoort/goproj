@@ -98,12 +98,14 @@ func (ptc ProjectTypeConfig) Write(boxname, target string) error {
 	}
 
 	file, err := os.Create(target)
-	_, err = file.Write(content)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
-	return nil
+
+	_, err = file.Write(content)
+
+	return err
 }
 
 // Exists missing godoc.

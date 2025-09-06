@@ -27,8 +27,9 @@ func (r *Registry) Register(p project.Project) {
 }
 
 func (r *Registry) Get(name string) (project.Project, bool) {
-	retv := project.Project{}
-	retv, err := r.Projects[name]
+	var err bool
+	var retv project.Project
+	retv, err = r.Projects[name]
 	return retv, err
 }
 
