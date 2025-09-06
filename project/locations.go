@@ -11,7 +11,7 @@ import (
 // Locations the locations used in the object
 type Locations struct {
 	RootDir   string `json:"root"`
-	backupdir string `json:"backupdir"`
+	BackupDirectory string `json:"backupdir"`
 }
 
 // ConfigDir missing godoc.
@@ -37,12 +37,12 @@ func (L Locations) ToolsPath() string {
 // BackupDir missing godoc.
 func (L Locations) BackupDir(args ...string) string {
 	if option, err := OneOrLess(args...); err == nil {
-		L.backupdir = option
+		L.BackupDirectory = option
 	}
-	if L.backupdir == "" {
-		L.backupdir = path.Join(L.RootDir, "backup")
+	if L.BackupDirectory == "" {
+		L.BackupDirectory = path.Join(L.RootDir, "backup")
 	}
-	return L.backupdir
+	return L.BackupDirectory
 }
 
 // BackupDirRotating missing godoc.
