@@ -1,0 +1,3 @@
+Remove a project
+
+Without -p, --prune it only removes the project from the registry.

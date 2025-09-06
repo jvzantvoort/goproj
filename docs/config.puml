@@ -1,0 +1,49 @@
+@startuml
+namespace config {
+    class MainConfig << (S,Aquamarine) >> {
+        + ForceInit bool
+        + HomeDir string
+        + ArchiveDir string
+        + ConfigDir string
+        + TemplatesDir string
+        + ConfigDirPerms int
+        + AppVersion string
+        + UserConfig UserConfig
+
+        + GetHomeDir() string
+        + ConfigFile(name string) string
+        + GetConfigDir() string
+        + GetTemplatesDir() string
+        + GetArchiveDir() string
+        + Init() 
+        + Save() 
+        + CreateDirs() 
+        + Read(reader io.Reader) error
+        + Write(writer io.Writer) error
+        + ReadFromFile(name string) error
+        + WriteToFile(name string) error
+        + ResetConfig() 
+        + Get(name string) (string, error)
+        + Fields() []string
+
+    }
+    class UserConfig << (S,Aquamarine) >> {
+        + MailAddress string
+        + Company string
+        + Copyright string
+        + License string
+        + User string
+        + Username string
+
+        + SetMailAddress(args ...string) error
+        + SetCompany(args ...string) error
+        + SetCopyright(args ...string) error
+        + SetLicense(args ...string) error
+        + SetUser(args ...string) error
+        + SetUsername(args ...string) error
+
+    }
+}
+
+
+@enduml

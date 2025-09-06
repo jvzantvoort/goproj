@@ -1,0 +1,7 @@
+Project registry management
+
+add - add a path to the registry
+list - list the registry contentse
+remove - remove a path from the registry
+index - create/update the registry by scanning the homedir
+info - get info of a project
