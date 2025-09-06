@@ -97,10 +97,10 @@ func (r Registry) GetConfigFile() string {
 func (r *Registry) Save() error {
 
 	fileh, err := os.OpenFile(r.GetConfigFile(), os.O_WRONLY|os.O_CREATE, 0644)
-	defer fileh.Close()
 	if err != nil {
 		return err
 	}
+	defer fileh.Close()
 
 	r.SetLastUpdated()
 
@@ -145,10 +145,10 @@ func (r *Registry) Index() error {
 // Load	loads the registry data	from the registry file
 func (r *Registry) Load() error {
 	fileh, err := os.Open(r.GetConfigFile())
-	defer fileh.Close()
 	if err != nil {
 		return err
 	}
+	defer fileh.Close()
 	return r.Read(fileh)
 }
 

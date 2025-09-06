@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/jvzantvoort/goproj/messages"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -13,9 +11,7 @@ var EditRegCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "A brief description of your command",
 	Long:  messages.GetLong("registry/edit"),
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("edit called")
-	},
+	Run:   handleEditRegCmd,
 }
 
 func handleEditRegCmd(cmd *cobra.Command, args []string) {
@@ -24,7 +20,6 @@ func handleEditRegCmd(cmd *cobra.Command, args []string) {
 	}
 	log.Debugf("%s: start", cmd.Use)
 	defer log.Debugf("%s: end", cmd.Use)
-
 
 	// name, _ := cmd.Flags().GetString("name")
 }

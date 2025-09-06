@@ -3,7 +3,6 @@ package projecttype
 import (
 	"embed"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -11,8 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
-	"github.com/mitchellh/go-homedir"
 	"github.com/jvzantvoort/goproj/config"
+	"github.com/mitchellh/go-homedir"
 )
 
 // Content missing godoc.
@@ -48,7 +47,7 @@ func (ptc *ProjectTypeConfig) readConfig(projtypeconfigdir string) {
 	err := viper.ReadInConfig() // Find and read the config file
 
 	if err != nil { // Handle errors reading the config file
-		panic(fmt.Errorf("Fatal error config file: %s", err))
+		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
 
 	err = viper.Unmarshal(&ptc)
@@ -122,7 +121,7 @@ func (ptc ProjectTypeConfig) Exists(targetpath string) bool {
 // UpdateConfigFile missing godoc.
 func (ptc ProjectTypeConfig) UpdateConfigFile(target string) error {
 
-	read, err := ioutil.ReadFile(target)
+	read, err := os.ReadFile(target)
 	if err != nil {
 		return err
 	}
@@ -135,7 +134,7 @@ func (ptc ProjectTypeConfig) UpdateConfigFile(target string) error {
 		content = ncontent
 	}
 
-	err = ioutil.WriteFile(target, []byte(content), 0)
+	err = os.WriteFile(target, []byte(content), 0)
 	if err != nil {
 		return err
 	}
@@ -152,11 +151,11 @@ func (ptc *ProjectTypeConfig) Init(projtypeconfigdir, projecttype string) error 
 	ptc.ProjectTypeDir = projtypeconfigdir
 
 	if ptc.Exists(ptc.ProjectTypeDir) {
-		return fmt.Errorf("Directory already exists: %s", ptc.ProjectTypeDir)
+		return fmt.Errorf("directory already exists: %s", ptc.ProjectTypeDir)
 	}
 
 	if err := os.MkdirAll(ptc.ProjectTypeDir, os.FileMode(int(0755))); err != nil {
-		return fmt.Errorf("Directory cannot be created: %s", ptc.ProjectTypeDir)
+		return fmt.Errorf("directory cannot be created: %s", ptc.ProjectTypeDir)
 	}
 
 	// write basic files
@@ -165,11 +164,11 @@ func (ptc *ProjectTypeConfig) Init(projtypeconfigdir, projecttype string) error 
 		fpath := path.Join(ptc.ProjectTypeDir, target)
 		err := ptc.Write(target, fpath)
 		if err != nil {
-			return fmt.Errorf("Error: %s", err)
+			return fmt.Errorf("error: %s", err)
 		}
 		err = ptc.UpdateConfigFile(fpath)
 		if err != nil {
-			return fmt.Errorf("Error: %s", err)
+			return fmt.Errorf("error: %s", err)
 		}
 	}
 

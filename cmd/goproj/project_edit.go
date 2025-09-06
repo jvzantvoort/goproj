@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/jvzantvoort/goproj/messages"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -13,9 +11,7 @@ var EditProjCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "A brief description of your command",
 	Long:  messages.GetLong("project/edit"),
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("edit called")
-	},
+	Run:   handleEditProjCmd,
 }
 
 func handleEditProjCmd(cmd *cobra.Command, args []string) {

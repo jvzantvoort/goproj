@@ -70,11 +70,11 @@ func (p *Project) ReadFromFile() error {
 	settings := p.Locations.ConfigFile()
 
 	fileh, err := os.Open(settings)
-	defer fileh.Close()
 
 	if err != nil {
 		return err
 	}
+	defer fileh.Close()
 
 	return p.Read(fileh)
 }
@@ -85,11 +85,11 @@ func (p Project) WriteToFile() error {
 	log.Debugf("save to: %s, start", settings)
 	defer log.Debugf("save to: %s, end", settings)
 	fileh, err := os.OpenFile(settings, os.O_WRONLY|os.O_CREATE, 0644)
-	defer fileh.Close()
 
 	if err != nil {
 		return err
 	}
+	defer fileh.Close()
 	return p.Write(fileh)
 }
 
